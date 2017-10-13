@@ -1,0 +1,28 @@
+# ls aliases
+alias ls='ls --color=auto'
+alias dir='dir --color=auto'
+alias vdir='vdir --color=auto'
+alias ll='ls -alF'
+alias la='ls -A'
+alias l='ls-CF'
+
+#grep
+alias grep='grep --color=auto'
+alias fgrep='fgrep --color=auto'
+alias egrep='egrep --color=auto'
+
+#shortcuts
+alias reload='source ~/.bash_profile'
+
+
+#apt
+alias install='sudo apt-get install'
+alias update='sudo apt-get update'
+alias upgrade='sudo apt-get upgrade'
+
+#navigation
+alias ..='cd ..'
+alias home='cd'
+
+
+#dangerous command confirmation
