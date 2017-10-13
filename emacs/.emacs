@@ -1,7 +1,28 @@
 ;; General Settings
-;; Dont show the start up screen when emacs opens
-(setq inhibit-startup-message t)
+;; Dont show the start up screen/other messages  when emacs opens
+(setq inhibit-startup-message t
+      inhibit-default-init t
+      inhibit-startup-echo-area-message "Hello Bilal"
+      initial-scratch-message "")
+
 (global-auto-revert-mode t) ;; automatically refresh files if there are outside changes
+
+(fset 'yes-or-no-p 'y-or-n-p) ;; accept y/n for yes/no prompts
+
+
+;;Backup and auto-save settings
+(setq backup-by-copying t  ;;dont overwrite symlinks
+      backup-directory-alist '(("." . "~/.emacs.d/auto-saves/")) ;; dont litter FS with save files
+      delete-old-versions t ;;dont keep too many old files
+      kept-new-versions 10
+      kept-old-versions 5
+      version-controll t) ;;use versioning for backups
+
+(setq auto-save-file-name-transforms
+      '((".*" "~/.emacs.d/auto-saves/" t)))
+
+;; tramp auto save seetings
+(setq tramp-auto-save-directory "~/.emacs.d/auto-saves/")
 
 
 ;;load the package system. Add the melpa, marmalade, gnu archives
