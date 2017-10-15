@@ -1,8 +1,9 @@
+
 ;; General Settings
 ;; Dont show the start up screen/other messages  when emacs opens
 (setq inhibit-startup-message t
       inhibit-default-init t
-      inhibit-startup-echo-area-message "Hello Bilal"
+      inhibit-startup-echo-area-message "Bilal"
       initial-scratch-message "")
 
 (global-auto-revert-mode t) ;; automatically refresh files if there are outside changes
