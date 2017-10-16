@@ -1,5 +1,5 @@
 This repo contains my personal dot files setup
 
-To install the dotfiles, remove all matching dotfiled from the home directory. Then use Stow on each folder, except for system. In the future, I will include an install/uninstall script to do this automatically. 
+The bin folder includes DFM a package found at https://github.com/justone/dotfiles. This utility allows for the quick installation of all dotfiles. The .dfminstall file provides configuration instructions.
 
-
+To install, from the home directory, run the following command. ./.dotfiles/bin/DFM install.
