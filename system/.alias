@@ -4,7 +4,7 @@ alias dir='dir --color=auto'
 alias vdir='vdir --color=auto'
 alias ll='ls -alF'
 alias la='ls -A'
-alias l='ls-CF'
+alias l='ls -CF'
 
 #grep
 alias grep='grep --color=auto'
@@ -24,5 +24,7 @@ alias upgrade='sudo apt-get upgrade'
 alias ..='cd ..'
 alias home='cd'
 
+#CLAC Backup
+alias clacbackup='/home/jae/cs3157-pub/tools/backup-cs3157-to-cunix.sh'
 
 #dangerous command confirmation
