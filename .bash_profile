@@ -8,7 +8,7 @@ DOTFILES_DIR="$HOME/.dotfiles"
 
 #Source the system dotfiles
 
-for DOTFILE in "$DOTFILES_DIR"/system/.{function,function_*,env,alias,completion,grep,prompt,custom}; do
+for DOTFILE in "$DOTFILES_DIR"/system/.{function,function_*,env,alias,path,completion,grep,prompt,custom}; do
     [ -f "$DOTFILE" ] && . "$DOTFILE"
 
 done
