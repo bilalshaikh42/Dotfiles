@@ -21,7 +21,7 @@ eval "$(dircolors "$DOTFILES_DIR"/system/.dir_colors)"
 
 
 #display settings for BASH On windows
-export DISPLAY=localhost:0.0
+#export DISPLAY=localhost:0.0
 
 
 #export
