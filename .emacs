@@ -1,4 +1,5 @@
 
+
 ;; General Settings
 ;; Dont show the start up screen/other messages  when emacs opens
 (setq inhibit-startup-message t
@@ -52,6 +53,10 @@
 	     :ensure t
 	     :config
 	     (which-key-mode))
+;;Install Magit, a git porcelain. Set key for common command.
+(use-package magit
+  :ensure t)
+(global-set-key (kbd "C-x g") 'magit-status
 
 ;;Theme Settings
 
