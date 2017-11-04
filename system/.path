@@ -17,6 +17,9 @@ prepend-path "$HOME/.rvm/bin"
 prepend-path "/usr/games/"
 prepend-path "usr/lib/go-1.9/bin"
 
+#add the default ruby to the path using RVM
+[ -e .rvm/environments/default ] && source .rvm/environments/default
+
 # Remove duplicates (preserving prepended items)
 # Source: http://unix.stackexchange.com/a/40755
 
