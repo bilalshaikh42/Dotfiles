@@ -15,11 +15,14 @@ prepend-path "/usr/sbin"
 prepend-path "/usr/local/sbin"
 prepend-path "$HOME/.rvm/bin"
 prepend-path "/usr/games/"
-prepend-path "/usr/lib/go-1.9/bin"
-prepend-path "usr/lib/go-1.9"
+prepend-path "$HOME/.go/bin/"
+prepend-path "$HOME/.go/"
+
 
 #Define environment variables that represent paths
-export GOPATH=$HOME/gopath
+export GOPATH="$HOME/go/"
+export GOROOT="$HOME/.go/"
+
 
 
 #add the default ruby to the path using RVM
