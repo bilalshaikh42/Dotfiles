@@ -1,11 +1,19 @@
 
 
 ;; General Settings
+
 ;; Dont show the start up screen/other messages  when emacs opens
 (setq inhibit-startup-message t
       inhibit-default-init t
       inhibit-startup-echo-area-message "Bilal"
       initial-scratch-message "")
+
+;;show line numbers on left margin
+(global-linum-mode t)
+
+;;highlight matching parens
+(global-linum-mode t)
+
 
 ;; automatically refresh files if there are outside changes. Do this for remote files too
 
@@ -28,6 +36,7 @@
 
 ;; tramp auto save seetings
 (setq tramp-auto-save-directory "~/.emacs.d/auto-saves/")
+
 
 
 ;;load the package system. Add the melpa, marmalade, gnu archives
@@ -55,7 +64,8 @@
 	     (which-key-mode))
 ;;Install Magit, a git porcelain. Set key for common command.
 (use-package magit
-  :ensure t)
+  :ensure t
+  :defer t)
 (global-set-key (kbd "C-x g") 'magit-status)
 
 ;;Theme Settings
@@ -71,18 +81,3 @@
 ;; Allow for tabs to be used within lines
 (setq c-tab-always-indent nil)
 
-
-
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(package-selected-packages (quote (solarized-theme which-key try use-package)))
- '(show-paren-mode t))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )
