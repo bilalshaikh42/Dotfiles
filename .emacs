@@ -38,6 +38,11 @@
 (setq tramp-auto-save-directory "~/.emacs.d/auto-saves/")
 
 
+;;use the ibuffer buffer management
+
+(global-set-key (kbd "C-x C-b") 'ibuffer)
+
+
 
 ;;load the package system. Add the melpa, marmalade, gnu archives
 (require 'package)
@@ -64,8 +69,7 @@
 	     (which-key-mode))
 ;;Install Magit, a git porcelain. Set key for common command.
 (use-package magit
-  :ensure t
-  :defer t)
+  :ensure t)
 (global-set-key (kbd "C-x g") 'magit-status)
 
 ;;Theme Settings
