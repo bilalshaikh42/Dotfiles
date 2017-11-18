@@ -1,5 +1,6 @@
 
 
+
 ;; General Settings
 ;; Dont show the start up screen/other messages  when emacs opens
 (setq inhibit-startup-message t
@@ -38,6 +39,8 @@
 (add-to-list 'package-archives '("gnu" . "https://elapa.gnu.org/packges/"))
 (package-initialize)
 
+(package-refresh-contents)
+
 ;;get the use-package system
 (unless (package-installed-p 'use-package)
         (package-refresh-contents)
@@ -53,9 +56,13 @@
 	     :ensure t
 	     :config
 	     (which-key-mode))
+
 ;;Install Magit, a git porcelain. Set key for common command.
 (use-package magit
   :ensure t)
+
+
+
 (global-set-key (kbd "C-x g") 'magit-status)
 
 ;;Theme Settings
