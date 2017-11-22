@@ -1,7 +1,10 @@
-
-
+;;; code:
 
 ;; General Settings
+
+
+;;save between sessions
+(desktop-save-mode 1)
 
 ;; Dont show the start up screen/other messages  when emacs opens
 (setq inhibit-startup-message t
@@ -18,8 +21,8 @@
 
 ;; automatically refresh files if there are outside changes. Do this for remote files too
 
-(setq global-auto-revert-mode t
-      auto-revert-remote-files t)
+(setq global-auto-revert-mode t)
+'( auto-revert-remote-files t)
 
 (fset 'yes-or-no-p 'y-or-n-p) ;; accept y/n for yes/no prompts
 
@@ -30,18 +33,31 @@
       delete-old-versions t ;;dont keep too many old files
       kept-new-versions 10
       kept-old-versions 5
-      version-controll t) ;;use versioning for backups
+      version-control t) ;;use versioning for backups
 
 (setq auto-save-file-name-transforms
       '((".*" "~/.emacs.d/auto-saves/" t)))
 
 ;; tramp auto save seetings
-(setq tramp-auto-save-directory "~/.emacs.d/auto-saves/")
+'( tramp-auto-save-directory "~/.emacs.d/auto-saves/")
 
 
 ;;use the ibuffer buffer management
 
 (global-set-key (kbd "C-x C-b") 'ibuffer)
+
+;; C mode settings
+;; Allow for tabs to be used within lines
+'(c-tab-always-indent nil)
+
+
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;                                                                       ;
+;                        Packages                                       ;
+;                                                                       ;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 
 
@@ -49,8 +65,8 @@
 (require 'package)
 (setq package-enable-at-startup nil)
 (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/"))
-(add-to-list 'package-archives '("marmalade" . "https://marmalde-repo.org/packages/"))
-(add-to-list 'package-archives '("gnu" . "https://elapa.gnu.org/packges/"))
+(add-to-list 'package-archives '("marmalade" . "https://marmalade-repo.org/packages/"))
+(add-to-list 'package-archives '("gnu" . "https://elpa.gnu.org/packages/"))
 (package-initialize)
 
 (package-refresh-contents)
@@ -79,6 +95,30 @@
   ("C-x g" . magit-status))
 
 
+;;install fly-check and fly-check-tip, which do syntax checking
+
+(use-package flycheck
+  :ensure t
+  :config
+  (global-flycheck-mode))
+
+(use-package flycheck-pos-tip
+  :ensure t
+  :config
+  '(flycheck-pos-tip-mode))
+
+
+;;smart parens, which provides IDE like paren management
+(use-package smartparens
+  :ensure t
+  :config
+  (require 'smartparens-config)
+  '(sp-base-key-binding 'paraedit)
+  (setq sp-autoskip-closing-pair 'always)
+  (setq sp-hybrid-kill-entire-symbol nil)
+  (sp-use-paredit-bindings))
+
+
 
 ;;Theme Settings
 
@@ -89,7 +129,5 @@
 ;;Font Settings
 '(default ((t (:family "DejaVu Sans Mono" :foundry "PfEd" :slant normal :weight normal :height 116 :width normal))))
 
-;; C mode settings
-;; Allow for tabs to be used within lines
-(setq c-tab-always-indent nil)
-
+(provide '.emacs)
+;;; .emacs ends here
