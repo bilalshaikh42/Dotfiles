@@ -23,8 +23,8 @@ eval "$(dircolors "$DOTFILES_DIR"/system/.dir_colors)"
 #display settings for BASH On windows
 if uname -r | grep 'Microsoft' -q
 then
-    echo bash test
     export DISPLAY=localhost:0.0
+    echo Bash on Windows detected. Set DIPLAY to $DISPLAY
 fi
 
 #export
