@@ -21,8 +21,11 @@ eval "$(dircolors "$DOTFILES_DIR"/system/.dir_colors)"
 
 
 #display settings for BASH On windows
-export DISPLAY=localhost:0.0
-
+if uname -r | grep 'Microsoft' -q
+then
+    echo bash test
+    export DISPLAY=localhost:0.0
+fi
 
 #export
 export DOTFILESS_DIR
