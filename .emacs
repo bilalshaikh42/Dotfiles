@@ -16,7 +16,7 @@
 (global-linum-mode t)
 
 ;;highlight matching parens
-(global-linum-mode t)
+(show-paren-mode t)
 
 
 ;; automatically refresh files if there are outside changes. Do this for remote files too
@@ -118,8 +118,23 @@
   (setq sp-hybrid-kill-entire-symbol nil)
   (sp-use-paredit-bindings))
 
+;;AUCTeX for latex tools
+(use-package auctex
+  :ensure t
+  :defer t
+  :config
+  (setq TeX-auto-save t)
+  (setq TeX-parse-self t)
+  ;;(setq-default TeX-master nil) ;;AUCTeX will prompt for master file when creating new file
+  (setq global-font-lock-mode t)
+  
+ )
 
 
+
+
+
+   
 ;;Theme Settings
 
 (use-package solarized-theme
@@ -131,3 +146,17 @@
 
 (provide '.emacs)
 ;;; .emacs ends here
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(package-selected-packages
+   (quote
+    (AUCTeX which-key use-package try solarized-theme smartparens magit flycheck-pos-tip))))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
