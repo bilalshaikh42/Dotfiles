@@ -22,7 +22,9 @@
 ;; automatically refresh files if there are outside changes. Do this for remote files too
 
 (setq global-auto-revert-mode t)
-'( auto-revert-remote-files t)
+(setq auto-revert-remote-files t)
+
+
 
 (fset 'yes-or-no-p 'y-or-n-p) ;; accept y/n for yes/no prompts
 
