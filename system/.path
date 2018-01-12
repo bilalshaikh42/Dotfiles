@@ -17,6 +17,7 @@ prepend-path "$HOME/.rvm/bin"
 prepend-path "/usr/games/"
 prepend-path "$HOME/.go/bin/"
 prepend-path "$HOME/.go/"
+prepend-path "$HOME/.local/bin"
 
 
 #Define environment variables that represent paths
