@@ -96,18 +96,31 @@
   :bind
   ("C-x g" . magit-status))
 
+(use-package elpy
+  :ensure t
+  :defer t
+  :config
+  (elpy-enable))
+
+(use-package py-autopep8
+  :ensure t
+  :defer t
+  :config
+  (add-hook 'elpy-mode-hook 'py-autopep8-enable-on-save))
+
 
 ;;install fly-check and fly-check-tip, which do syntax checking
 
 (use-package flycheck
   :ensure t
   :config
-  (global-flycheck-mode))
+  (global-flycheck-mode)
+  (add-hook 'elpy-mode-hook 'flycheck-mode) )
 
 (use-package flycheck-pos-tip
   :ensure t
   :config
-  '(flycheck-pos-tip-mode))
+  (flycheck-pos-tip-mode))
 
 
 ;;smart parens, which provides IDE like paren management
