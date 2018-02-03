@@ -13,21 +13,11 @@ prepend-path "$HOME/bin"
 prepend-path "/sbin"
 prepend-path "/usr/sbin"
 prepend-path "/usr/local/sbin"
-prepend-path "$HOME/.rvm/bin"
 prepend-path "/usr/games/"
-prepend-path "$HOME/.go/bin/"
-prepend-path "$HOME/.go/"
 prepend-path "$HOME/.local/bin"
+prepend-path "$HOME/env/miniconda3/bin"
+prepend-path "$HOME/env/miniconda2/bin"
 
-
-#Define environment variables that represent paths
-export GOPATH="$HOME/go/"
-export GOROOT="$HOME/.go/"
-
-
-
-#add the default ruby to the path using RVM
-[ -e .rvm/environments/default ] && source .rvm/environments/default
 
 # Remove duplicates (preserving prepended items)
 # Source: http://unix.stackexchange.com/a/40755
