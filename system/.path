@@ -5,6 +5,8 @@ is-executable getconf && PATH=$(`command -v getconf` PATH)
 
 # Prepend new items to path (if directory exists)
 
+prepend-path "$HOME/env/miniconda3/bin"
+prepend-path "$HOME/env/miniconda2/bin"
 prepend-path "/bin"
 prepend-path "/usr/bin"
 prepend-path "/usr/local/bin"
@@ -15,8 +17,7 @@ prepend-path "/usr/sbin"
 prepend-path "/usr/local/sbin"
 prepend-path "/usr/games/"
 prepend-path "$HOME/.local/bin"
-prepend-path "$HOME/env/miniconda3/bin"
-prepend-path "$HOME/env/miniconda2/bin"
+
 
 
 # Remove duplicates (preserving prepended items)
