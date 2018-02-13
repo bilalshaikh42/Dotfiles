@@ -128,10 +128,15 @@
   :bind
   ("C-x g" . magit-status))
 
+;;Install Python tools
+
 (use-package elpy
   :ensure t)
 
 (use-package py-autopep8
+  :ensure t)
+
+(use-package ein
   :ensure t)
 
 
@@ -200,3 +205,17 @@
 
 (provide '.emacs)
 ;;; .emacs ends here
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(package-selected-packages
+   (quote
+    (ein which-key use-package try solarized-theme smartparens py-autopep8 monokai-theme magit flycheck-pos-tip elpy auctex))))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
