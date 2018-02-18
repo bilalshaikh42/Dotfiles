@@ -7,7 +7,8 @@
 ;                                                                       ;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-
+;; turn off the bell
+ (setq ring-bell-function 'ignore)
 
 ;;save between sessions
 (desktop-save-mode 1)
