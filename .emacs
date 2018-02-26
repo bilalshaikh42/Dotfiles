@@ -20,7 +20,8 @@
       initial-scratch-message "")
 
 ;;show line numbers on left margin
-(global-linum-mode t)
+(add-hook 'prog-mode-hook 'linum-mode)
+
 
 ;;highlight matching parens
 (show-paren-mode t)
@@ -149,6 +150,15 @@
 (use-package flycheck-pos-tip
   :ensure t)
 
+;;company mode, which does auto completion of syntax along with additional mode pacakges
+(use-package company
+  :ensure t)
+
+(use-package company-auctex
+  :ensure t
+  :config
+  (company-auctex-init))
+
 ;;smart parens, which provides IDE like paren management
 (use-package smartparens
   :ensure t
@@ -185,6 +195,11 @@
 (add-hook 'prog-mode-hook 'flycheck-mode)
 (add-hook 'flycheck-mode-hook 'flycheck-pos-tip-mode)
 
+;;auto completion
+(add-hook 'prog-mode-hook 'company-mode)
+(add-hook 'latex-mode-hook 'company-mode)
+
+
 ;;Python Editing
 (add-hook 'python-mode-hook 'elpy-mode)
 (add-hook 'elpy-mode-hook 'py-autopep8-enable-on-save)
@@ -211,6 +226,8 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(LaTeX-item-indent 0)
+ '(doc-view-continuous t)
  '(package-selected-packages
    (quote
     (ein which-key use-package try solarized-theme smartparens py-autopep8 monokai-theme magit flycheck-pos-tip elpy auctex))))
