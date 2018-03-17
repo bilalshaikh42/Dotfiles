@@ -6,7 +6,8 @@
 ;                     General Settings                                  ;
 ;                                                                       ;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
+;; use bash as the shell
+(setq shell-file-name "/bin/bash")
 ;; turn off the bell
  (setq ring-bell-function 'ignore)
 
@@ -151,6 +152,8 @@
 
 (use-package ein
   :ensure t)
+(setenv "WORKON_HOME" "~/env/miniconda3/envs/")
+(pyvenv-mode 1)
 
 
 ;;install fly-check and fly-check-tip, which do syntax checking
