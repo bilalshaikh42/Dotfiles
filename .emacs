@@ -10,8 +10,16 @@
 ;; turn off the bell
  (setq ring-bell-function 'ignore)
 
+;; dont minimize on control-z
+(global-unset-key "\C-z")
+(global-unset-key "\C-x\C-z") 
+
 ;;save between sessions
 (desktop-save-mode 1)
+(setq desktop-path '("~/.emacs.d/"))
+(setq desktop-dirname "~/.emacs.d/")
+(setq desktop-base-file-name "emacs-desktop")
+
 
 ;; Don't show the start up screen/other messages  when Emacs opens
 (setq inhibit-startup-message t
@@ -36,7 +44,7 @@
 
 
 ;; Ignore modification-time-only changes in files, i.e. ones that
-;; don't really change the contents.  
+;; don't really change the contents. 
 (defun update-buffer-modtime-if-byte-identical ()
   (let* ((size      (buffer-size))
          (byte-size (position-bytes size))
@@ -106,10 +114,10 @@
 (add-to-list 'package-archives '("gnu" . "https://elpa.gnu.org/packages/"))
 (package-initialize)
 
-(package-refresh-contents)
 
 ;;get the use-package system
 (unless (package-installed-p 'use-package)
+  (package-refresh-contents)
   (package-install 'use-package))
 
 
@@ -133,7 +141,10 @@
 ;;Install Python tools
 
 (use-package elpy
-  :ensure t)
+  :ensure t
+  :bind
+  (:map elpy-mode-map ("C-c C-z" . 'elpy-shell-switch-to-shell)))
+
 
 (use-package py-autopep8
   :ensure t)
@@ -178,6 +189,10 @@
   (setq global-font-lock-mode t)
   (company-auctex-init))
 
+;;Evil to provide VIM keybindings
+(use-package evil
+  :ensure t)
+
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;                                                                       ;
@@ -189,6 +204,9 @@
 (add-hook 'text-mode-hook 'flyspell-mode)
 (add-hook 'prog-mode-hook 'flyspell-prog-mode)
 
+;;evil mode
+(add-hook 'text-mode-hook 'evil-mode)
+(add-hook 'prog-mode-hook 'evil-mode)
 
 ;;syntax checking
 (add-hook 'prog-mode-hook 'flycheck-mode)
@@ -221,19 +239,3 @@
 
 (provide '.emacs)
 ;;; .emacs ends here
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(LaTeX-item-indent 0)
- '(doc-view-continuous t)
- '(package-selected-packages
-   (quote
-    (ein which-key use-package try solarized-theme smartparens py-autopep8 monokai-theme magit flycheck-pos-tip elpy auctex))))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )
