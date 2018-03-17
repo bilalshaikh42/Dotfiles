@@ -12,6 +12,10 @@
 
 ;;save between sessions
 (desktop-save-mode 1)
+(setq desktop-path '("~/.emacs.d/"))
+(setq desktop-dirname "~/.emacs.d/")
+(setq desktop-base-file-name "emacs-desktop")
+
 
 ;; Don't show the start up screen/other messages  when Emacs opens
 (setq inhibit-startup-message t
@@ -36,7 +40,7 @@
 
 
 ;; Ignore modification-time-only changes in files, i.e. ones that
-;; don't really change the contents.  
+;; don't really change the contents. 
 (defun update-buffer-modtime-if-byte-identical ()
   (let* ((size      (buffer-size))
          (byte-size (position-bytes size))
@@ -179,6 +183,10 @@
   ;;(setq-default TeX-master nil) ;;AUCTeX will prompt for master file when creating new file
   (setq global-font-lock-mode t))
 
+;;Evil to provide VIM keybindings
+(use-package evil
+  :ensure t)
+
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;                                                                       ;
@@ -190,6 +198,9 @@
 (add-hook 'text-mode-hook 'flyspell-mode)
 (add-hook 'prog-mode-hook 'flyspell-prog-mode)
 
+;;evil mode
+(add-hook 'text-mode-hook 'evil-mode)
+(add-hook 'prog-mode-hook 'evil-mode)
 
 ;;syntax checking
 (add-hook 'prog-mode-hook 'flycheck-mode)
