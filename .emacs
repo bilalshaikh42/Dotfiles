@@ -155,9 +155,7 @@
   :ensure t)
 
 (use-package company-auctex
-  :ensure t
-  :config
-  (company-auctex-init))
+  :ensure t)
 
 ;;smart parens, which provides IDE like paren management
 (use-package smartparens
@@ -177,7 +175,8 @@
   (setq TeX-auto-save t)
   (setq TeX-parse-self t)
   ;;(setq-default TeX-master nil) ;;AUCTeX will prompt for master file when creating new file
-  (setq global-font-lock-mode t))
+  (setq global-font-lock-mode t)
+  (company-auctex-init))
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -193,6 +192,7 @@
 
 ;;syntax checking
 (add-hook 'prog-mode-hook 'flycheck-mode)
+(add-hook 'latex-mode-hook 'flycheck-mode)
 (add-hook 'flycheck-mode-hook 'flycheck-pos-tip-mode)
 
 ;;auto completion
