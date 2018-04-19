@@ -9,7 +9,11 @@
 ;; use bash as the shell
 (setq shell-file-name "/bin/bash")
 ;; turn off the bell
- (setq ring-bell-function 'ignore)
+(setq ring-bell-function 'ignore)
+
+;;dont litter the init file with custom settings
+(setq custom-file "~/.emacs.d/custom.el")
+(load custom-file 'noerror)
 
 ;; dont minimize on control-z
 (global-unset-key "\C-z")
