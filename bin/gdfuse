@@ -1,4 +1,0 @@
-#!/bin/bash
-
-su bilal -l -c "/home/bilal/bin/google-drive-ocamlfuse -label $1 $*"
-exit 0
