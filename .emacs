@@ -6,8 +6,10 @@
 ;                     General Settings                                  ;
 ;                                                                       ;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
 ;; use bash as the shell
 (setq shell-file-name "/bin/bash")
+
 ;; turn off the bell
 (setq ring-bell-function 'ignore)
 
@@ -39,10 +41,7 @@
 ;;highlight matching parens
 (show-paren-mode t)
 
-
-
 ;; automatically refresh files if there are outside changes. Do this for remote files too
-
 (global-auto-revert-mode 1)
 (setq auto-revert-remote-files 1)
 (setq revert-without-query '(".*"))
@@ -82,7 +81,6 @@
 
 (fset 'yes-or-no-p 'y-or-n-p) ;; accept y/n for yes/no prompts
 
-
 ;;Backup and auto-save settings
 (setq backup-by-copying t  ;;dont overwrite symlinks
       backup-directory-alist '(("." . "~/.emacs.d/auto-saves/")) ;; don't litter FS with save files
@@ -97,9 +95,7 @@
 ;; tramp auto save settings
 '( tramp-auto-save-directory "~/.emacs.d/auto-saves/")
 
-
 ;;use the ibuffer buffer management
-
 (global-set-key (kbd "C-x C-b") 'ibuffer)
 
 
@@ -128,7 +124,8 @@
 
 ;;Install try, which lets you run a package without installing it
 (use-package try
-  :ensure t)
+  :ensure t
+  :defer t)
 
 ;; Install, which key, which brings up help on key combinations
 (use-package which-key
@@ -140,22 +137,25 @@
 (use-package magit
   :ensure t
   :defer t
-  :bind
+ :bind
   ("C-x g" . magit-status))
 
 ;;Install Python tools
 
 (use-package elpy
   :ensure t
+  :defer t
   :bind
   (:map elpy-mode-map ("C-c C-z" . 'elpy-shell-switch-to-shell)))
 
 
 (use-package py-autopep8
-  :ensure t)
+  :ensure t
+  :defer t)
 
 (use-package ein
-  :ensure t)
+  :ensure t
+  :defer t)
 (setenv "WORKON_HOME" "~/env/miniconda3/envs/")
 (pyvenv-mode 1)
 
@@ -163,17 +163,21 @@
 ;;install fly-check and fly-check-tip, which do syntax checking
 
 (use-package flycheck
-  :ensure t)
+  :ensure t
+  :defer t)
 
 (use-package flycheck-pos-tip
-  :ensure t)
+  :ensure t
+  :defer t)
 
 ;;company mode, which does auto completion of syntax along with additional mode pacakges
 (use-package company
-  :ensure t)
+  :ensure t
+  :defer t)
 
 (use-package company-auctex
-  :ensure t)
+  :ensure t
+  :defer t)
 
 ;;smart parens, which provides IDE like paren management
 (use-package smartparens
@@ -200,7 +204,7 @@
 (use-package evil
   :ensure t)
 
-
+;;Emacs code browser, to assist code navigation
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;                                                                       ;
 ;                      Editing Settings                                 ;
@@ -233,13 +237,20 @@
 
 ;;Theme Settings
 
-;;(use-package solarized-theme
-;;             :ensure t)
+(use-package solarized-theme
+  :ensure t
+  :defer t)
 ;;(load-theme 'solarized-dark t)
 
 (use-package monokai-theme
-  :ensure t)
-(load-theme 'monokai t)
+  :ensure t
+  :defer t)
+;;(load-theme 'monokai t)
+
+(use-package spacemacs-theme
+  :ensure t
+  :defer t)
+(load-theme 'spacemacs-dark)
 
 ;;Font Settings
 '(default ((t (:family "DejaVu Sans Mono" :foundry "PfEd" :slant normal :weight normal :height 116 :width normal))))
