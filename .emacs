@@ -131,7 +131,9 @@
 (use-package which-key
   :ensure t
   :config
-  (which-key-mode))
+  (which-key-mode)
+  :bind
+  ("C-x w". which-key-show-top-level))
 
 ;;Install Magit, a git porcelain. Set key for common command.
 (use-package magit
@@ -210,6 +212,18 @@
 ;                      Editing Settings                                 ;
 ;                                                                       ;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;;Org mode bindings
+(global-set-key "\C-cl" 'org-store-link)
+(global-set-key "\C-ca" 'org-agenda)
+(global-set-key "\C-cc" 'org-capture)
+(global-set-key "\C-cb" 'org-switchb)
+
+(setq org-agenda-files (list "~/org/*"))
+
+
+
+
 
 ;; Spell check options
 (add-hook 'text-mode-hook 'flyspell-mode)
