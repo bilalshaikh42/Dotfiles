@@ -206,6 +206,16 @@
 (use-package evil
   :ensure t)
 
+;;docker-tramp mode which extends tramp to work within docker containers
+(use-package docker-tramp
+  :ensure t
+  :defer t)
+
+;; dockerfile mode which provides syntactical highlighting for dockerfiles
+(use-package dockerfile-mode
+  :ensure t
+  :defer t)
+
 ;;Emacs code browser, to assist code navigation
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;                                                                       ;
