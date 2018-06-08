@@ -242,12 +242,19 @@
 (add-hook 'latex-mode-hook 'company-mode)
 
 
+;;HS mode bindings when not already in use
+;; Call this function as needed through hooks
+(defun hs-minor-mode-keys ()
+  (local-set-key "\C-ch" 'hs-hide-block)
+  (local-set-key "\C-cs" 'hs-show-block))
+
+
 ;;Python Editing
 (add-hook 'python-mode-hook 'elpy-mode)
 (add-hook 'elpy-mode-hook 'py-autopep8-enable-on-save)
-
-
-
+(add-hook 'elpy-mode-hook 'hs-minor-mode)
+(add-hook 'elpy-mode-hook 'hs-minor-mode-keys)
+ 
 ;;Theme Settings
 
 (use-package solarized-theme
