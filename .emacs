@@ -98,6 +98,8 @@
 ;;use the ibuffer buffer management
 (global-set-key (kbd "C-x C-b") 'ibuffer)
 
+;;switch between frames easily
+(global-set-key (kbd "C-x M-o") 'next-multiframe-window)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;                                                                       ;
@@ -204,7 +206,9 @@
 
 ;;Evil to provide VIM keybindings
 (use-package evil
-  :ensure t)
+  :ensure t
+  :config
+'(evil-set-initial-state 'magit-popup-mode 'emacs))
 
 ;;docker-tramp mode which extends tramp to work within docker containers
 (use-package docker-tramp
