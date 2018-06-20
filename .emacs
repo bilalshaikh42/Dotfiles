@@ -168,7 +168,8 @@
 
 (use-package flycheck
   :ensure t
-  :defer t)
+  :config
+  (global-flycheck-mode))
 
 (use-package flycheck-pos-tip
   :ensure t
