@@ -33,7 +33,8 @@
   ld = "!sh -c \"git log --since '${1:-1} days ago' --oneline --author $(git config user.email)\" -"
   pr = "!f() { git fetch -fu ${2:-origin} refs/pull/$1/head:pr/$1 && git checkout pr/$1; }; f"
   patch = !git --no-pager diff --no-color
-
+  all ="!f() { ls | xargs -P16 -I{} git -C {} $1; }; f"
+  
 [color]
   ui = auto
 [color "branch"]
