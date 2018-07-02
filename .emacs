@@ -98,6 +98,8 @@
 ;;use the ibuffer buffer management
 (global-set-key (kbd "C-x C-b") 'ibuffer)
 
+;;switch between frames easily
+(global-set-key (kbd "C-x M-o") 'next-multiframe-window)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;                                                                       ;
@@ -166,7 +168,8 @@
 
 (use-package flycheck
   :ensure t
-  :defer t)
+  :config
+  (global-flycheck-mode))
 
 (use-package flycheck-pos-tip
   :ensure t
@@ -204,7 +207,19 @@
 
 ;;Evil to provide VIM keybindings
 (use-package evil
-  :ensure t)
+  :ensure t
+  :config
+'(evil-set-initial-state 'magit-popup-mode 'emacs))
+
+;;docker-tramp mode which extends tramp to work within docker containers
+(use-package docker-tramp
+  :ensure t
+  :defer t)
+
+;; dockerfile mode which provides syntactical highlighting for dockerfiles
+(use-package dockerfile-mode
+  :ensure t
+  :defer t)
 
 ;;Emacs code browser, to assist code navigation
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -242,12 +257,19 @@
 (add-hook 'latex-mode-hook 'company-mode)
 
 
+;;HS mode bindings when not already in use
+;; Call this function as needed through hooks
+(defun hs-minor-mode-keys ()
+  (local-set-key "\C-ch" 'hs-hide-block)
+  (local-set-key "\C-cs" 'hs-show-block))
+
+
 ;;Python Editing
 (add-hook 'python-mode-hook 'elpy-mode)
 (add-hook 'elpy-mode-hook 'py-autopep8-enable-on-save)
-
-
-
+(add-hook 'elpy-mode-hook 'hs-minor-mode)
+(add-hook 'elpy-mode-hook 'hs-minor-mode-keys)
+ 
 ;;Theme Settings
 
 (use-package solarized-theme

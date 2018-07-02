@@ -1,6 +1,7 @@
+LICENCE skip
 README.md skip
 system skip
 Template skip
 *.*~ skip
 .ssh recurse
-
+.config recurse
