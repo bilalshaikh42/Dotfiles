@@ -61,3 +61,5 @@
 	helper = cache --timeout=7200
 [pull]
 	rebase = true
+[url "ssh://git@github.com/"]
+	insteadOf = https://github.com/
