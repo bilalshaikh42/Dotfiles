@@ -233,12 +233,15 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 
+
 ;;Org-crypt to allow encryption of org-mode headings
 (use-package org
   :ensure t
   :defer t
   :config
   (require 'org-crypt)
+  (require 'ox)
+  (require 'ox-org)
   (org-crypt-use-before-save-magic)
   (setq org-tags-exclude-from-inheritance (quote ("crypt")))
   ;; GPG key to use for encryption
@@ -251,6 +254,35 @@
 (global-set-key "\C-cc" 'org-capture)
 (global-set-key "\C-cb" 'org-switchb)
 (setq org-agenda-files (quote("~/org")))
+
+;; Org-brain
+(use-package org-brain
+  :ensure t
+  :init
+  (setq org-brain-path "dwhere-i-want-org-brain")
+  ;; For Evil users
+  (with-eval-after-load 'evil
+    (evil-set-initial-state 'org-brain-visualize-mode 'emacs))
+  :config
+  (setq org-id-track-globally t)
+  (setq org-id-locations-file "~/.emacs.d/.org-id-locations")
+  (push '("b" "Brain" plain (function org-brain-goto-end)
+          "* %i%?" :empty-lines 1)
+        org-capture-templates)
+  (setq org-brain-visualize-default-choices 'all)
+  (setq org-brain-title-max-length 12))
+
+;; org-mindmap
+
+(use-package org-mind-map
+  :ensure t
+  :config
+    (setq org-mind-map-engine "dot")  ; default; Directed Graph
+    ;; (setq org-mind-map-engine "neato")  ; Undirected Spring Graph"
+    ;; (setq org-mind-map-engine "twopi")  ; Radial Layout"
+    ;; (setq org-mind-map-engine "circo")  ; Circular Layout"
+    ;; (setq org-mind-map-engine "fdp")  ; Undirected Spring Force-Directed"
+  )
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;                                                                       ;
