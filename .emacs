@@ -209,7 +209,10 @@
 (use-package evil
   :ensure t
   :config
-'(evil-set-initial-state 'magit-popup-mode 'emacs))
+  '(evil-set-initial-state 'magit-popup-mode 'emacs)
+  '(evil-set-initial-state 'org-mode 'emacs)
+  (setq evil-default-state 'emacs))
+  
 
 ;;docker-tramp mode which extends tramp to work within docker containers
 (use-package docker-tramp
@@ -221,12 +224,26 @@
   :ensure t
   :defer t)
 
-;;Emacs code browser, to assist code navigation
+
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;                                                                       ;
-;                      Editing Settings                                 ;
+;                      Org Mode                                         ;
 ;                                                                       ;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+
+;;Org-crypt to allow encryption of org-mode headings
+(use-package org
+  :ensure t
+  :defer t
+  :config
+  (require 'org-crypt)
+  (org-crypt-use-before-save-magic)
+  (setq org-tags-exclude-from-inheritance (quote ("crypt")))
+  ;; GPG key to use for encryption
+  ;; Either the Key ID or set to nil to use symmetric encryption.
+  (setq org-crypt-key nil))
 
 ;;Org mode bindings
 (global-set-key "\C-cl" 'org-store-link)
@@ -235,9 +252,11 @@
 (global-set-key "\C-cb" 'org-switchb)
 (setq org-agenda-files (quote("~/org")))
 
-
-
-
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;                                                                       ;
+;                      Editing Settings                                 ;
+;                                                                       ;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;; Spell check options
 (add-hook 'text-mode-hook 'flyspell-mode)
@@ -270,7 +289,12 @@
 (add-hook 'elpy-mode-hook 'hs-minor-mode)
 (add-hook 'elpy-mode-hook 'hs-minor-mode-keys)
  
-;;Theme Settings
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;                                                                       ;
+;                               Theme                                   ;
+;                                                                       ;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
 
 (use-package solarized-theme
   :ensure t
@@ -288,7 +312,7 @@
 (load-theme 'spacemacs-dark)
 
 ;;Font Settings
-'(default ((t (:family "DejaVu Sans Mono" :foundry "PfEd" :slant normal :weight normal :height 116 :width normal))))
+'(default ((t (:family "Consolas" :foundry "PfEd" :slant normal :weight normal :height 116 :width normal))))
 
 (provide '.emacs)
 ;;; .emacs ends here
