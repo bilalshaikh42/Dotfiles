@@ -224,6 +224,9 @@
   :ensure t
   :defer t)
 
+(use-package ascii-art-to-unicode
+  :ensure t
+  :defer t)
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -234,11 +237,11 @@
 
 
 
-;;Org-crypt to allow encryption of org-mode headings
+;; Load org and set some key bindings and enable encryption
 (use-package org
   :ensure t
   :defer t
-  :config
+  :init
   (require 'org-crypt)
   (require 'ox)
   (require 'ox-org)
@@ -246,31 +249,49 @@
   (setq org-tags-exclude-from-inheritance (quote ("crypt")))
   ;; GPG key to use for encryption
   ;; Either the Key ID or set to nil to use symmetric encryption.
-  (setq org-crypt-key nil))
+  (setq org-crypt-key nil)
+  :hook  (org-mode . visual-line-mode)
+  :bind(
+	("C-c l" . org-store-link)
+	("C-c a" . org-agenda)
+	("C-c c" . org-capture))
+  :bind ( :map org-mode-map
+	       ("C-c d" . org-decrypt-entries)))
 
-;;Org mode bindings
-(global-set-key "\C-cl" 'org-store-link)
-(global-set-key "\C-ca" 'org-agenda)
-(global-set-key "\C-cc" 'org-capture)
-(global-set-key "\C-cb" 'org-switchb)
-(setq org-agenda-files (quote("~/org")))
+(use-package org-bullets
+  :ensure t
+  :defer t
+  :hook (org-mode . org-bullets-mode))
+
+
+
+
+(setq org-agenda-files (quote("~/Org/")))
 
 ;; Org-brain
 (use-package org-brain
   :ensure t
   :init
-  (setq org-brain-path "dwhere-i-want-org-brain")
+  (setq org-brain-path "~/Org/")
   ;; For Evil users
   (with-eval-after-load 'evil
     (evil-set-initial-state 'org-brain-visualize-mode 'emacs))
   :config
   (setq org-id-track-globally t)
   (setq org-id-locations-file "~/.emacs.d/.org-id-locations")
-  (push '("b" "Brain" plain (function org-brain-goto-end)
-          "* %i%?" :empty-lines 1)
-        org-capture-templates)
   (setq org-brain-visualize-default-choices 'all)
-  (setq org-brain-title-max-length 12))
+  (setq org-brain-title-max-length 12)
+  :bind
+   ("C-c v" . org-brain-visualize)
+  :bind( :map org-mode-map
+  ("C-c i" . org-id-get-create)))
+
+
+;;used to turn on ascii-art-to-unicode package
+(defun aa2u-buffer ()
+  (aa2u (point-min) (point-max)))
+  (add-hook 'org-brain-after-visualize-hook #'aa2u-buffer)
+
 
 ;; org-mindmap
 
