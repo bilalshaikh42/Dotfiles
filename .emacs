@@ -228,6 +228,21 @@
   :ensure t
   :defer t)
 
+(use-package pdf-tools
+  :ensure t
+  :defer t
+  :config
+  (pdf-tools-install)
+  ;; open pdfs scaled to fit page
+  (setq-default pdf-view-display-size 'fit-page))
+(use-package org-pdfview
+  :ensure t
+  :defer t
+  :config
+  (add-to-list 'org-file-apps
+               '("\\.pdf\\'" . (lambda (file link) (org-pdfview-open link)))))
+
+
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;                                                                       ;
@@ -250,6 +265,12 @@
   ;; GPG key to use for encryption
   ;; Either the Key ID or set to nil to use symmetric encryption.
   (setq org-crypt-key nil)
+  (require 'org-habit)
+  :config
+  (add-to-list 'org-file-apps' ("\\.pdf\\'" . (lambda (file link) (org-pdfview-open link))))
+  (setq org-agenda-files (quote("~/Org/")))
+  (setq org-todo-keywords'((sequence "TODO(t)" "IN-PROGRESS(p)"  "WAIT(w@/!)"  "|" "DONE(d!)" "CANCELED(c@)")))
+
   :hook  (org-mode . visual-line-mode)
   :bind(
 	("C-c l" . org-store-link)
@@ -263,10 +284,16 @@
   :defer t
   :hook (org-mode . org-bullets-mode))
 
+;; org-gcal to sync agenda to google calendar
+(use-package org-gcal
+  :ensure t
+  :config
+  (setq org-gcal-client-id "8240918350-f32o6lnqmbfuvcledi75ptbf7aia2iv0.apps.googleusercontent.com"
+	org-gcal-client-secret "KryFDAztv4ysgsm2Cr_NyMMq"
+	org-gcal-file-alist '(("bill2507733@gmail.com" .  "~/Org/gcal.org")))
+  (add-hook 'org-agenda-mode-hook (lambda () (org-gcal-sync) ))
+  (add-hook 'org-capture-after-finalize-hook (lambda () (org-gcal-sync) )))
 
-
-
-(setq org-agenda-files (quote("~/Org/")))
 
 ;; Org-brain
 (use-package org-brain
