@@ -149,6 +149,8 @@
 (use-package elpy
   :ensure t
   :defer t
+  :config
+  (setq elpy-rpc-backend "jedi")
   :bind
   (:map elpy-mode-map ("C-c C-z" . 'elpy-shell-switch-to-shell)))
 
@@ -183,6 +185,7 @@
 (use-package company-auctex
   :ensure t
   :defer t)
+
 
 ;;smart parens, which provides IDE like paren management
 (use-package smartparens
@@ -239,6 +242,7 @@
   :ensure t
   :defer t
   :config
+  (eval-after-load 'org '(require 'org-pdfview))
   (add-to-list 'org-file-apps
                '("\\.pdf\\'" . (lambda (file link) (org-pdfview-open link)))))
 
@@ -269,8 +273,8 @@
   :config
   (add-to-list 'org-file-apps' ("\\.pdf\\'" . (lambda (file link) (org-pdfview-open link))))
   (setq org-agenda-files (quote("~/Org/")))
-  (setq org-todo-keywords'((sequence "TODO(t)" "IN-PROGRESS(p)"  "WAIT(w@/!)"  "|" "DONE(d!)" "CANCELED(c@)")))
-
+  (setq org-todo-keywords'((sequence "TODAY(T)" "TODO(t)" "IN-PROGRESS(p)"  "WAIT(w@/!)"  "|" "DONE(d!)" "CANCELED(c@)")))
+  (setq org-enforce-todo-dependencies nil)
   :hook  (org-mode . visual-line-mode)
   :bind(
 	("C-c l" . org-store-link)
@@ -289,11 +293,10 @@
   :ensure t
   :config
   (setq org-gcal-client-id "8240918350-f32o6lnqmbfuvcledi75ptbf7aia2iv0.apps.googleusercontent.com"
-	org-gcal-client-secret "KryFDAztv4ysgsm2Cr_NyMMq"
-	org-gcal-file-alist '(("bill2507733@gmail.com" .  "~/Org/gcal.org")))
+	org-gcal-client-secret "KryFDAztv4ysgsm2Cr_NyMMq" ;; Not really secret
+	org-gcal-file-alist '(("bill2507733@gmail.com" .  "~/Org/Appointments.org")))
   (add-hook 'org-agenda-mode-hook (lambda () (org-gcal-sync) ))
   (add-hook 'org-capture-after-finalize-hook (lambda () (org-gcal-sync) )))
-
 
 ;; Org-brain
 (use-package org-brain
@@ -311,7 +314,27 @@
   :bind
    ("C-c v" . org-brain-visualize)
   :bind( :map org-mode-map
-  ("C-c i" . org-id-get-create)))
+	      ("C-c i" . org-id-get-create)))
+
+
+(use-package org-super-agenda
+  :ensure t
+  :defer t
+  :config
+  (setq org-super-agenda-groups
+	'((:name "Done"
+		 :todo ("DONE" "CANCELLED")
+		 :order 99)
+	  (:name "Habits"
+		 :order 98
+		 :habit t)
+	  (:name "Schedule"
+		 :order 0
+		 :time-grid t)
+	 (:name "OVERDUE!!"
+		:and (:deadline past :todo ("TODAY" "TODO" "WAIT"))
+		:order 1)))
+  :hook (org-mode org-super-agenda-mode))
 
 
 ;;used to turn on ascii-art-to-unicode package
