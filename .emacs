@@ -255,7 +255,6 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 
-
 ;; Load org and set some key bindings and enable encryption
 (use-package org
   :ensure t
@@ -287,6 +286,13 @@
   :ensure t
   :defer t
   :hook (org-mode . org-bullets-mode))
+
+;; have the ctrl-e and ctrol-a keys work better for emacs headlines
+(setq org-special-ctrl-a/e t)
+;; Change org elipses to something better
+(setq org-ellipsis " ▼")
+;;Have tab at the end of a line move to within the header so that they next tab opens up the heading 
+(add-hook 'org-tab-first-hook 'org-end-of-line)
 
 ;; org-gcal to sync agenda to google calendar
 (use-package org-gcal
