@@ -1,17 +1,11 @@
-;;; code:
-
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;                                                                       ;
-;                     General Settings                                  ;
-;                                                                       ;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
+* Emacs Configuration File
+This is my emacs configuration file. At the moment (<2018-09-17 Mon>) it is heavily under-construction and I am transitioning from a standard emacs-lisp file to and org-mode to enable a literate version. 
+* General Settings
+** Configuration
+#+BEGIN_SRC emacs-lisp
 ;; use bash as the shell
 (setq shell-file-name "/bin/bash")
 
-;; turn off the bell
-(setq ring-bell-function 'ignore)
 
 ;;dont litter the init file with custom settings
 (setq custom-file "~/.emacs.d/custom.el")
@@ -21,34 +15,19 @@
 (global-unset-key "\C-z")
 (global-unset-key "\C-x\C-z") 
 
-;;save between sessions
-(desktop-save-mode 1)
-(setq desktop-path '("~/.emacs.d/"))
-(setq desktop-dirname "~/.emacs.d/")
-(setq desktop-base-file-name "emacs-desktop")
+(fset 'yes-or-no-p 'y-or-n-p) ;; accept y/n for yes/no prompts
 
-
-;; Don't show the start up screen/other messages  when Emacs opens
-(setq inhibit-startup-message t
-      inhibit-default-init t
-      inhibit-startup-echo-area-message "Bilal"
-      initial-scratch-message "")
-
-;;show line numbers on left margin
-(add-hook 'prog-mode-hook 'linum-mode)
-
-
-;;highlight matching parens
-(show-paren-mode t)
-
+#+END_SRC
+** Buffer Reloading
+#+BEGIN_SRC emacs-lisp
 ;; automatically refresh files if there are outside changes. Do this for remote files too
 (global-auto-revert-mode 1)
 (setq auto-revert-remote-files 1)
 (setq revert-without-query '(".*"))
 
-
 ;; Ignore modification-time-only changes in files, i.e. ones that
 ;; don't really change the contents. 
+
 (defun update-buffer-modtime-if-byte-identical ()
   (let* ((size      (buffer-size))
          (byte-size (position-bytes size))
@@ -76,10 +55,15 @@
     (apply original arguments)))
 (advice-add 'ask-user-about-supersession-threat :around #'ask-user-about-supers)
 
+#+END_SRC
+** Backup And Saving
+#+BEGIN_SRC emacs-lisp
 
-
-
-(fset 'yes-or-no-p 'y-or-n-p) ;; accept y/n for yes/no prompts
+;;save between sessions
+(desktop-save-mode 1)
+(setq desktop-path '("~/.emacs.d/"))
+(setq desktop-dirname "~/.emacs.d/")
+(setq desktop-base-file-name "emacs-desktop")
 
 ;;Backup and auto-save settings
 (setq backup-by-copying t  ;;dont overwrite symlinks
@@ -95,35 +79,67 @@
 ;; tramp auto save settings
 '( tramp-auto-save-directory "~/.emacs.d/auto-saves/")
 
+#+END_SRC
+* Interface Tweaks
+#+BEGIN_SRC emacs-lisp
+;; Don't show the start up screen/other messages  when Emacs opens
+(setq inhibit-startup-message t
+      inhibit-default-init t
+      inhibit-startup-echo-area-message "Bilal"
+      initial-scratch-message "")
+
+;;show line numbers on left margin
+(add-hook 'prog-mode-hook 'linum-mode)
+
+;;highlight matching parens
+(show-paren-mode t)
+
+;; turn off the bell
+(setq ring-bell-function 'ignore)
+
 ;;use the ibuffer buffer management
 (global-set-key (kbd "C-x C-b") 'ibuffer)
 
 ;;switch between frames easily
 (global-set-key (kbd "C-x M-o") 'next-multiframe-window)
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;                                                                       ;
-;                        Packages                                       ;
-;                                                                       ;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+#+END_SRC
+* Editing Settings
+#+BEGIN_SRC emacs-lisp
+;; Spell check options
+(add-hook 'text-mode-hook 'flyspell-mode)
+(add-hook 'prog-mode-hook 'flyspell-prog-mode)
+
+;;evil mode
+(add-hook 'text-mode-hook 'evil-mode)
+(add-hook 'prog-mode-hook 'evil-mode)
+
+;;syntax checking
+(add-hook 'prog-mode-hook 'flycheck-mode)
+(add-hook 'latex-mode-hook 'flycheck-mode)
+(add-hook 'flycheck-mode-hook 'flycheck-pos-tip-mode)
+
+;;auto completion
+(add-hook 'prog-mode-hook 'company-mode)
+(add-hook 'latex-mode-hook 'company-mode)
 
 
-
-;;load the package system. Add the melpa, marmalade, gnu archives
-(require 'package)
-(setq package-enable-at-startup nil)
-(add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/"))
-(add-to-list 'package-archives '("marmalade" . "https://marmalade-repo.org/packages/"))
-(add-to-list 'package-archives '("gnu" . "https://elpa.gnu.org/packages/"))
-(package-initialize)
+;;HS mode bindings when not already in use
+;; Call this function as needed through hooks
+(defun hs-minor-mode-keys ()
+  (local-set-key "\C-ch" 'hs-hide-block)
+  (local-set-key "\C-cs" 'hs-show-block))
 
 
-;;get the use-package system
-(unless (package-installed-p 'use-package)
-  (package-refresh-contents)
-  (package-install 'use-package))
+;;Python Editing
+(add-hook 'python-mode-hook 'elpy-mode)
+(add-hook 'elpy-mode-hook 'py-autopep8-enable-on-save)
+(add-hook 'elpy-mode-hook 'hs-minor-mode)
+(add-hook 'elpy-mode-hook 'hs-minor-mode-keys)
 
-
+#+END_SRC
+* General Packages
+#+BEGIN_SRC emacs-lisp
 ;;Install try, which lets you run a package without installing it
 (use-package try
   :ensure t
@@ -246,15 +262,9 @@
   (add-to-list 'org-file-apps
                '("\\.pdf\\'" . (lambda (file link) (org-pdfview-open link)))))
 
-
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;                                                                       ;
-;                      Org Mode                                         ;
-;                                                                       ;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-
+#+END_SRC
+* Org Mode
+#+BEGIN_SRC emacs-lisp
 ;; Load org and set some key bindings and enable encryption
 (use-package org
   :ensure t
@@ -388,50 +398,11 @@
     ;; (setq org-mind-map-engine "circo")  ; Circular Layout"
     ;; (setq org-mind-map-engine "fdp")  ; Undirected Spring Force-Directed"
   )
+  P
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;                                                                       ;
-;                      Editing Settings                                 ;
-;                                                                       ;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-;; Spell check options
-(add-hook 'text-mode-hook 'flyspell-mode)
-(add-hook 'prog-mode-hook 'flyspell-prog-mode)
-
-;;evil mode
-(add-hook 'text-mode-hook 'evil-mode)
-(add-hook 'prog-mode-hook 'evil-mode)
-
-;;syntax checking
-(add-hook 'prog-mode-hook 'flycheck-mode)
-(add-hook 'latex-mode-hook 'flycheck-mode)
-(add-hook 'flycheck-mode-hook 'flycheck-pos-tip-mode)
-
-;;auto completion
-(add-hook 'prog-mode-hook 'company-mode)
-(add-hook 'latex-mode-hook 'company-mode)
-
-
-;;HS mode bindings when not already in use
-;; Call this function as needed through hooks
-(defun hs-minor-mode-keys ()
-  (local-set-key "\C-ch" 'hs-hide-block)
-  (local-set-key "\C-cs" 'hs-show-block))
-
-
-;;Python Editing
-(add-hook 'python-mode-hook 'elpy-mode)
-(add-hook 'elpy-mode-hook 'py-autopep8-enable-on-save)
-(add-hook 'elpy-mode-hook 'hs-minor-mode)
-(add-hook 'elpy-mode-hook 'hs-minor-mode-keys)
- 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;                                                                       ;
-;                               Theme                                   ;
-;                                                                       ;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
+#+END_SRC
+* Theme
+#+BEGIN_SRC emacs-lisp
 
 (use-package solarized-theme
   :ensure t
@@ -451,5 +422,5 @@
 ;;Font Settings
 '(default ((t (:family "Consolas" :foundry "PfEd" :slant normal :weight normal :height 116 :width normal))))
 
-(provide '.emacs)
-;;; .emacs ends here
+
+#+END_SRC

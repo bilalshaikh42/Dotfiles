@@ -5,3 +5,4 @@ Template skip
 *.*~ skip
 .ssh recurse
 .config recurse
+.emacs.d recurse
