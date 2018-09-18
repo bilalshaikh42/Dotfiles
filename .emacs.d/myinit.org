@@ -1,5 +1,5 @@
 * Emacs Configuration File
-This is my emacs configuration file. At the moment (<2018-09-17 Mon>) it is heavily under-construction and I am transitioning from a standard emacs-lisp file to and org-mode to enable a literate version. 
+This is my emacs configuration file. At the moment (<2018-09-17 Mon>) it is heavily under-construction and I am transitioning from a standard emacs-lisp file to an org-mode file to enable a literate version. 
 * General Settings
 ** Configuration
 #+BEGIN_SRC emacs-lisp
