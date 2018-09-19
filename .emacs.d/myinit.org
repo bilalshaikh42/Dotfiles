@@ -398,8 +398,6 @@ This is my emacs configuration file. At the moment (<2018-09-17 Mon>) it is heav
     ;; (setq org-mind-map-engine "circo")  ; Circular Layout"
     ;; (setq org-mind-map-engine "fdp")  ; Undirected Spring Force-Directed"
   )
-  P
-
 #+END_SRC
 * Theme
 #+BEGIN_SRC emacs-lisp
