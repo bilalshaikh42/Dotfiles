@@ -1,8 +1,24 @@
-* Emacs Configuration File
-This is my emacs configuration file. At the moment (<2018-09-17 Mon>) it is heavily under-construction and I am transitioning from a standard emacs-lisp file to an org-mode file to enable a literate version. 
-* General Settings
-** Configuration
-#+BEGIN_SRC emacs-lisp
+#+TITLE: Emacs Configuration File
+This is my Emacs configuration file. At the moment (<2018-11-03 Sat>) it is heavily under-construction and I am transitioning from a standard emacs-lisp file to an org-mode file to enable a literate version. 
+** Running
+Execute the following code block to reload-settings
+#+BEGIN_SRC emacs-lisp :tangle no :results silent
+(load "~/.emacs.d/init.el")
+#+END_SRC
+** Code
+*** Enable Packages 
+#+BEGIN_SRC emacs-lisp :tangle yes 
+(require 'package)
+(setq package-enable-at-startup nil)
+(add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/"))
+(add-to-list 'package-archives '("marmalade" . "https://marmalade-repo.org/packages/"))
+(add-to-list 'package-archives '("gnu" . "https://elpa.gnu.org/packages/"))
+(package-initialize)
+
+#+END_SRC
+*** General Settings
+**** Configuration
+#+BEGIN_SRC emacs-lisp :tangle yes
 ;; use bash as the shell
 (setq shell-file-name "/bin/bash")
 
@@ -18,8 +34,8 @@ This is my emacs configuration file. At the moment (<2018-09-17 Mon>) it is heav
 (fset 'yes-or-no-p 'y-or-n-p) ;; accept y/n for yes/no prompts
 
 #+END_SRC
-** Buffer Reloading
-#+BEGIN_SRC emacs-lisp
+**** Buffer Reloading 
+#+BEGIN_SRC emacs-lisp :tangle yes
 ;; automatically refresh files if there are outside changes. Do this for remote files too
 (global-auto-revert-mode 1)
 (setq auto-revert-remote-files 1)
@@ -56,11 +72,12 @@ This is my emacs configuration file. At the moment (<2018-09-17 Mon>) it is heav
 (advice-add 'ask-user-about-supersession-threat :around #'ask-user-about-supers)
 
 #+END_SRC
-** Backup And Saving
-#+BEGIN_SRC emacs-lisp
+**** Backup And Saving
+#+BEGIN_SRC emacs-lisp :tangle yes
 
 ;;save between sessions
-(desktop-save-mode 1)
+;;Disabled for now, might enable at a later date
+;(desktop-save-mode 1)
 (setq desktop-path '("~/.emacs.d/"))
 (setq desktop-dirname "~/.emacs.d/")
 (setq desktop-base-file-name "emacs-desktop")
@@ -80,8 +97,8 @@ This is my emacs configuration file. At the moment (<2018-09-17 Mon>) it is heav
 '( tramp-auto-save-directory "~/.emacs.d/auto-saves/")
 
 #+END_SRC
-* Interface Tweaks
-#+BEGIN_SRC emacs-lisp
+*** Interface Tweaks
+#+BEGIN_SRC emacs-lisp :tangle yes
 ;; Don't show the start up screen/other messages  when Emacs opens
 (setq inhibit-startup-message t
       inhibit-default-init t
@@ -104,8 +121,8 @@ This is my emacs configuration file. At the moment (<2018-09-17 Mon>) it is heav
 (global-set-key (kbd "C-x M-o") 'next-multiframe-window)
 
 #+END_SRC
-* Editing Settings
-#+BEGIN_SRC emacs-lisp
+*** Editing Settings
+#+BEGIN_SRC emacs-lisp :tangle yes
 ;; Spell check options
 (add-hook 'text-mode-hook 'flyspell-mode)
 (add-hook 'prog-mode-hook 'flyspell-prog-mode)
@@ -137,9 +154,9 @@ This is my emacs configuration file. At the moment (<2018-09-17 Mon>) it is heav
 (add-hook 'elpy-mode-hook 'hs-minor-mode)
 (add-hook 'elpy-mode-hook 'hs-minor-mode-keys)
 
-#+END_SRC
-* General Packages
-#+BEGIN_SRC emacs-lisp
+#+END_SRC 
+*** General Packages
+#+BEGIN_SRC emacs-lisp :tangle yes
 ;;Install try, which lets you run a package without installing it
 (use-package try
   :ensure t
@@ -149,7 +166,7 @@ This is my emacs configuration file. At the moment (<2018-09-17 Mon>) it is heav
 (use-package which-key
   :ensure t
   :config
-  (which-key-mode)
+  (which-key-mode 1)
   :bind
   ("C-x w". which-key-show-top-level))
 
@@ -263,8 +280,9 @@ This is my emacs configuration file. At the moment (<2018-09-17 Mon>) it is heav
                '("\\.pdf\\'" . (lambda (file link) (org-pdfview-open link)))))
 
 #+END_SRC
-* Org Mode
-#+BEGIN_SRC emacs-lisp
+*** Org Mode
+**** Base Settings
+#+BEGIN_SRC emacs-lisp :tangle yes
 ;; Load org and set some key bindings and enable encryption
 (use-package org
   :ensure t
@@ -293,8 +311,11 @@ This is my emacs configuration file. At the moment (<2018-09-17 Mon>) it is heav
   :bind ( :map org-mode-map
 	       ("C-c d" . org-decrypt-entries)))
 
-(use-package webkit-katex-render)
- 
+#+END_SRC
+
+**** Packages
+***** Org-Bullets
+#+BEGIN_SRC emacs-lisp :tangle yes
 (use-package org-bullets
   :ensure t
   :defer t
@@ -306,7 +327,9 @@ This is my emacs configuration file. At the moment (<2018-09-17 Mon>) it is heav
 (setq org-ellipsis " ▼")
 ;;Have tab at the end of a line move to within the header so that they next tab opens up the heading 
 (add-hook 'org-tab-first-hook 'org-end-of-line)
-
+#+END_SRC
+***** Org-Gcal
+#+BEGIN_SRC emacs-lisp :tangle yes
 ;; org-gcal to sync agenda to google calendar
 (use-package org-gcal
   :ensure t
@@ -316,7 +339,9 @@ This is my emacs configuration file. At the moment (<2018-09-17 Mon>) it is heav
 	org-gcal-file-alist '(("bill2507733@gmail.com" .  "~/Org/Appointments.org")))
   (add-hook 'org-agenda-mode-hook (lambda () (org-gcal-sync) ))
   (add-hook 'org-capture-after-finalize-hook (lambda () (org-gcal-sync) )))
-
+#+END_SRC
+***** Org-Brain
+#+BEGIN_SRC emacs-lisp :tangle yes
 ;; Org-brain
 (use-package org-brain
   :ensure t
@@ -335,6 +360,10 @@ This is my emacs configuration file. At the moment (<2018-09-17 Mon>) it is heav
   :bind( :map org-mode-map
 	      ("C-c i" . org-id-get-create)))
 
+#+END_SRC
+
+***** Org-Super Agenda
+#+BEGIN_SRC emacs-lisp :tangle yes
 
 (use-package org-super-agenda
   :ensure t
@@ -379,14 +408,18 @@ This is my emacs configuration file. At the moment (<2018-09-17 Mon>) it is heav
 	  ))
   :hook (org-agenda org-super-agenda-mode))
 
-
+#+END_SRC
+****** Ascii Unicode Dependency
+#+BEGIN_SRC emacs-lisp :tangle yes
 
 ;;used to turn on ascii-art-to-unicode package
 (defun aa2u-buffer ()
   (aa2u (point-min) (point-max)))
   (add-hook 'org-brain-after-visualize-hook #'aa2u-buffer)
 
-
+#+END_SRC
+***** Mind-Mapping
+#+BEGIN_SRC emacs-lisp :tangle yes
 ;; org-mindmap
 
 (use-package org-mind-map
@@ -398,9 +431,9 @@ This is my emacs configuration file. At the moment (<2018-09-17 Mon>) it is heav
     ;; (setq org-mind-map-engine "circo")  ; Circular Layout"
     ;; (setq org-mind-map-engine "fdp")  ; Undirected Spring Force-Directed"
   )
-#+END_SRC
-* Theme
-#+BEGIN_SRC emacs-lisp
+#+END_SRC  
+*** Theme
+#+BEGIN_SRC emacs-lisp :tangle yes
 
 (use-package solarized-theme
   :ensure t
@@ -422,3 +455,10 @@ This is my emacs configuration file. At the moment (<2018-09-17 Mon>) it is heav
 
 
 #+END_SRC
+** Generate El File 
+#+BEGIN_SRC emacs-lisp :tangle no
+; Local Variables:
+; eval: (add-hook (quote after-save-hook) (lambda nil (org-babel-tangle)) nil t)
+; End:
+#+END_SRC
+
