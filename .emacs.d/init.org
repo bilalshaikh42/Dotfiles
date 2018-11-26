@@ -1,24 +1,29 @@
 #+TITLE: Emacs Configuration File
+#+PROPERTY: header-args :tangle init.el   
+** About
 This is my Emacs configuration file. At the moment (<2018-11-03 Sat>) it is heavily under-construction and I am transitioning from a standard emacs-lisp file to an org-mode file to enable a literate version. 
-** Running
-Execute the following code block to reload-settings
-#+BEGIN_SRC emacs-lisp :tangle no :results silent
-(load "~/.emacs.d/init.el")
-#+END_SRC
 ** Code
 *** Enable Packages 
-#+BEGIN_SRC emacs-lisp :tangle yes 
+#+BEGIN_SRC emacs-lisp tangle: yes  
 (require 'package)
 (setq package-enable-at-startup nil)
 (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/"))
 (add-to-list 'package-archives '("marmalade" . "https://marmalade-repo.org/packages/"))
 (add-to-list 'package-archives '("gnu" . "https://elpa.gnu.org/packages/"))
 (package-initialize)
-
+#+END_SRC
+*** Auto Update Packages
+#+BEGIN_SRC emacs-lisp :tangle yes
+(use-package auto-package-update
+  :ensure t
+  :config
+  (setq auto-package-update-delete-old-versions t)
+  (setq auto-package-update-hide-results t)
+  (auto-package-update-maybe))
 #+END_SRC
 *** General Settings
 **** Configuration
-#+BEGIN_SRC emacs-lisp :tangle yes
+#+BEGIN_SRC emacs-lisp 
 ;; use bash as the shell
 (setq shell-file-name "/bin/bash")
 
@@ -121,40 +126,101 @@ Execute the following code block to reload-settings
 (global-set-key (kbd "C-x M-o") 'next-multiframe-window)
 
 #+END_SRC
-*** Editing Settings
+*** Editing
+**** Editing Tools
+***** Spell Checking
 #+BEGIN_SRC emacs-lisp :tangle yes
-;; Spell check options
-(add-hook 'text-mode-hook 'flyspell-mode)
-(add-hook 'prog-mode-hook 'flyspell-prog-mode)
+(use-package flyspell
+  :ensure t
+  :hook 
+  (text-mode . flyspell-mode)
+  (prog-mode . flyspell-prog-mode))
+(use-package flyspell-popup
+  :ensure t
+  :config
+  (flyspell-popup-autocorrect-mode))
+#+END_src
+***** Syntax Checking
+#+BEGIN_SRC emacs-lisp :tangle yes
+;;install fly-check and fly-check-tip, which do syntax checking
 
-;;evil mode
-(add-hook 'text-mode-hook 'evil-mode)
-(add-hook 'prog-mode-hook 'evil-mode)
+(use-package flycheck-pos-tip
+  :ensure flycheck
+  :config 
+  (global-flycheck-mode)
+  (add-hook 'prog-mode-hook 'flycheck-mode)
+  (add-hook 'latex-mode-hook 'flycheck-mode)
+  (add-hook 'flycheck-mode-hook 'flycheck-pos-tip-mode))
 
-;;syntax checking
-(add-hook 'prog-mode-hook 'flycheck-mode)
-(add-hook 'latex-mode-hook 'flycheck-mode)
-(add-hook 'flycheck-mode-hook 'flycheck-pos-tip-mode)
+#+END_SRC
+***** Auto Completion
+#+BEGIN_SRC emacs-lisp :tangle yes
+(use-package company
+  :ensure t
+  :hook 
+  (after-init . global-company-mode))
+#+END_SRC
 
-;;auto completion
-(add-hook 'prog-mode-hook 'company-mode)
-(add-hook 'latex-mode-hook 'company-mode)
+#+RESULTS:
 
-
+***** Hide Show
+#+BEGIN_SRC emacs-lisp :tangle yes
 ;;HS mode bindings when not already in use
 ;; Call this function as needed through hooks
 (defun hs-minor-mode-keys ()
   (local-set-key "\C-ch" 'hs-hide-block)
   (local-set-key "\C-cs" 'hs-show-block))
 
+#+END_SRC
+**** Editing Modes
+***** Latex
+#+BEGIN_SRC emacs-lisp :tangle yes
+;;AUCTeX for latex tools
+(use-package tex
+  :ensure auctex
+  :config
+  (setq TeX-auto-save t)
+  (setq TeX-parse-self t)
+  ;;(setq-default TeX-master nil) ;;AUCTeX will prompt for master file when creating new file
+  (setq global-font-lock-mode t)
+  :bind (:map LaTeX-mode-map
+  ("C-<tab>" . 'TeX-complete-symbol)))
 
-;;Python Editing
+(use-package company-auctex
+  :ensure t
+  :after company
+  :after tex
+  :config
+  (company-auctex-init))
+  
+#+END_SRC
+***** Python
+#+BEGIN_SRC emacs-lisp :tangle yes
+(use-package elpy
+  :ensure t
+  :defer t
+  :config
+  (setq elpy-rpc-backend "jedi")
+  :bind
+  (:map elpy-mode-map ("C-c C-z" . 'elpy-shell-switch-to-shell)))
+
+(use-package py-autopep8
+  :ensure t
+  :defer t)
+
+(use-package ein
+  :ensure t
+  :defer t)
+(setenv "WORKON_HOME" "~/env/miniconda3/envs/")
+(pyvenv-mode 1)
+
+
 (add-hook 'python-mode-hook 'elpy-mode)
 (add-hook 'elpy-mode-hook 'py-autopep8-enable-on-save)
 (add-hook 'elpy-mode-hook 'hs-minor-mode)
 (add-hook 'elpy-mode-hook 'hs-minor-mode-keys)
+#+END_SRC
 
-#+END_SRC 
 *** General Packages
 #+BEGIN_SRC emacs-lisp :tangle yes
 ;;Install try, which lets you run a package without installing it
@@ -170,54 +236,15 @@ Execute the following code block to reload-settings
   :bind
   ("C-x w". which-key-show-top-level))
 
-;;Install Magit, a git porcelain. Set key for common command.
+  ;;Install Magit, a git porcelain. Set key for common command
 (use-package magit
   :ensure t
   :defer t
  :bind
   ("C-x g" . magit-status))
 
-;;Install Python tools
-
-(use-package elpy
-  :ensure t
-  :defer t
-  :config
-  (setq elpy-rpc-backend "jedi")
-  :bind
-  (:map elpy-mode-map ("C-c C-z" . 'elpy-shell-switch-to-shell)))
 
 
-(use-package py-autopep8
-  :ensure t
-  :defer t)
-
-(use-package ein
-  :ensure t
-  :defer t)
-(setenv "WORKON_HOME" "~/env/miniconda3/envs/")
-(pyvenv-mode 1)
-
-
-;;install fly-check and fly-check-tip, which do syntax checking
-
-(use-package flycheck
-  :ensure t
-  :config
-  (global-flycheck-mode))
-
-(use-package flycheck-pos-tip
-  :ensure t
-  :defer t)
-
-;;company mode, which does auto completion of syntax along with additional mode pacakges
-(use-package company
-  :ensure t
-  :defer t)
-
-(use-package company-auctex
-  :ensure t
-  :defer t)
 
 
 ;;smart parens, which provides IDE like paren management
@@ -229,17 +256,6 @@ Execute the following code block to reload-settings
   (setq sp-autoskip-closing-pair 'always)
   (setq sp-hybrid-kill-entire-symbol nil)
   (sp-use-paredit-bindings))
-
-;;AUCTeX for latex tools
-(use-package auctex
-  :ensure t
-  :defer t
-  :config
-  (setq TeX-auto-save t)
-  (setq TeX-parse-self t)
-  ;;(setq-default TeX-master nil) ;;AUCTeX will prompt for master file when creating new file
-  (setq global-font-lock-mode t)
-  (company-auctex-init))
 
 ;;Evil to provide VIM keybindings
 (use-package evil
@@ -310,16 +326,23 @@ Execute the following code block to reload-settings
 	("C-c c" . org-capture))
   :bind ( :map org-mode-map
 	       ("C-c d" . org-decrypt-entries)))
-
+               
 #+END_SRC
-
+**** Running Code
+#+BEGIN_SRC emacs-lisp :tangle yes
+     (org-babel-do-load-languages
+      'org-babel-load-languages
+      '((emacs-lisp . t)
+        (org . t)))
+#+END_SRC
 **** Packages
 ***** Org-Bullets
 #+BEGIN_SRC emacs-lisp :tangle yes
 (use-package org-bullets
   :ensure t
   :defer t
-  :hook (org-mode . org-bullets-mode))
+  ;;:hook (org-mode . org-bullets-mode)
+)
 
 ;; have the ctrl-e and ctrol-a keys work better for emacs headlines
 (setq org-special-ctrl-a/e t)
@@ -432,6 +455,36 @@ Execute the following code block to reload-settings
     ;; (setq org-mind-map-engine "fdp")  ; Undirected Spring Force-Directed"
   )
 #+END_SRC  
+**** Publishing
+***** Org Hugo
+#+BEGIN_SRC emacs-lisp :tangle yes
+(use-package ox-hugo
+  :ensure t
+  :after ox)
+#+END_SRC
+***** Htmlize
+#+BEGIN_SRC emacs-lisp
+(use-package htmlize
+   :ensure t
+)
+#+END_SRC
+***** Source Background Color
+#+BEGIN_SRC emacs-lisp :tangle yes
+(defun my/org-inline-css-hook (exporter)
+  "Insert custom inline css to automatically set the
+background of code to whatever theme I'm using's background"
+  (when (eq exporter 'html)
+    (let* ((my-pre-bg (face-background 'default))
+           (my-pre-fg (face-foreground 'default)))
+      (setq
+       org-html-head-extra
+       (concat
+        org-html-head-extra
+        (format "<style type=\"text/css\">\n pre.src {background-color: %s; color: %s;}</style>\n"
+                my-pre-bg my-pre-fg))))))
+
+(add-hook 'org-export-before-processing-hook 'my/org-inline-css-hook)
+#+END_SRC
 *** Theme
 #+BEGIN_SRC emacs-lisp :tangle yes
 
@@ -450,15 +503,36 @@ Execute the following code block to reload-settings
   :defer t)
 (load-theme 'spacemacs-dark)
 
+(setq default-frame-alist initial-frame-alist)
 ;;Font Settings
 '(default ((t (:family "Consolas" :foundry "PfEd" :slant normal :weight normal :height 116 :width normal))))
 
 
 #+END_SRC
-** Generate El File 
-#+BEGIN_SRC emacs-lisp :tangle no
-; Local Variables:
-; eval: (add-hook (quote after-save-hook) (lambda nil (org-babel-tangle)) nil t)
-; End:
+
+#+RESULTS:
+| default | ((t (:family Consolas :foundry PfEd :slant normal :weight normal :height 116 :width normal))) |
+
+** Set Up
+*** Running 
+Execute the following code block to reload-settings
+#+BEGIN_SRC emacs-lisp :tangle no :results silent
+(load "~/.emacs.d/init.el")
+#+END_SRC 
+*** Generate El File
+The below code is used to set the local variables of the org file. The local variables are as follows
+Eval: this causes the org file to be generated into an el file upon saving. The code is itself in a code block. This is so that exporting this org-file works properly. 
+#+BEGIN_SRC org :tangle no
+# Local Variables:  
+# eval: (add-hook (quote after-save-hook) (lambda nil (org-babel-tangle)) nil t)
+# End: 
+#+END_SRC
+In order for this code block to work, you must include the following line at the top of the org file. All source blocks that do not belong in the .el file (such as those documenting this file in org-mode) should have the tangle header set to no instead. 
+#+BEGIN_SRC org :tangle no
+#+PROPERTY: header-args :tangle init.el
 #+END_SRC
 
+ 
+ speel 
+
+speel 

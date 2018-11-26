@@ -5,6 +5,13 @@
 (add-to-list 'package-archives '("gnu" . "https://elpa.gnu.org/packages/"))
 (package-initialize)
 
+(use-package auto-package-update
+  :ensure t
+  :config
+  (setq auto-package-update-delete-old-versions t)
+  (setq auto-package-update-hide-results t)
+  (auto-package-update-maybe))
+
 ;; use bash as the shell
 (setq shell-file-name "/bin/bash")
 
@@ -96,23 +103,30 @@
 ;;switch between frames easily
 (global-set-key (kbd "C-x M-o") 'next-multiframe-window)
 
-;; Spell check options
-(add-hook 'text-mode-hook 'flyspell-mode)
-(add-hook 'prog-mode-hook 'flyspell-prog-mode)
+(use-package flyspell
+  :ensure t
+  :hook 
+  (text-mode . flyspell-mode)
+  (prog-mode . flyspell-prog-mode))
+(use-package flyspell-popup
+  :ensure t
+  :config
+  (flyspell-popup-autocorrect-mode))
 
-;;evil mode
-(add-hook 'text-mode-hook 'evil-mode)
-(add-hook 'prog-mode-hook 'evil-mode)
+;;install fly-check and fly-check-tip, which do syntax checking
 
-;;syntax checking
-(add-hook 'prog-mode-hook 'flycheck-mode)
-(add-hook 'latex-mode-hook 'flycheck-mode)
-(add-hook 'flycheck-mode-hook 'flycheck-pos-tip-mode)
+(use-package flycheck-pos-tip
+  :ensure flycheck
+  :config 
+  (global-flycheck-mode)
+  (add-hook 'prog-mode-hook 'flycheck-mode)
+  (add-hook 'latex-mode-hook 'flycheck-mode)
+  (add-hook 'flycheck-mode-hook 'flycheck-pos-tip-mode))
 
-;;auto completion
-(add-hook 'prog-mode-hook 'company-mode)
-(add-hook 'latex-mode-hook 'company-mode)
-
+(use-package company
+  :ensure t
+  :hook 
+  (after-init . global-company-mode))
 
 ;;HS mode bindings when not already in use
 ;; Call this function as needed through hooks
@@ -120,8 +134,43 @@
   (local-set-key "\C-ch" 'hs-hide-block)
   (local-set-key "\C-cs" 'hs-show-block))
 
+;;AUCTeX for latex tools
+(use-package tex
+  :ensure auctex
+  :config
+  (setq TeX-auto-save t)
+  (setq TeX-parse-self t)
+  ;;(setq-default TeX-master nil) ;;AUCTeX will prompt for master file when creating new file
+  (setq global-font-lock-mode t)
+  :bind (:map LaTeX-mode-map
+  ("C-<tab>" . 'TeX-complete-symbol)))
 
-;;Python Editing
+(use-package company-auctex
+  :ensure t
+  :after company
+  :after tex
+  :config
+  (company-auctex-init))
+
+(use-package elpy
+  :ensure t
+  :defer t
+  :config
+  (setq elpy-rpc-backend "jedi")
+  :bind
+  (:map elpy-mode-map ("C-c C-z" . 'elpy-shell-switch-to-shell)))
+
+(use-package py-autopep8
+  :ensure t
+  :defer t)
+
+(use-package ein
+  :ensure t
+  :defer t)
+(setenv "WORKON_HOME" "~/env/miniconda3/envs/")
+(pyvenv-mode 1)
+
+
 (add-hook 'python-mode-hook 'elpy-mode)
 (add-hook 'elpy-mode-hook 'py-autopep8-enable-on-save)
 (add-hook 'elpy-mode-hook 'hs-minor-mode)
@@ -140,54 +189,15 @@
   :bind
   ("C-x w". which-key-show-top-level))
 
-;;Install Magit, a git porcelain. Set key for common command.
+  ;;Install Magit, a git porcelain. Set key for common command
 (use-package magit
   :ensure t
   :defer t
  :bind
   ("C-x g" . magit-status))
 
-;;Install Python tools
-
-(use-package elpy
-  :ensure t
-  :defer t
-  :config
-  (setq elpy-rpc-backend "jedi")
-  :bind
-  (:map elpy-mode-map ("C-c C-z" . 'elpy-shell-switch-to-shell)))
 
 
-(use-package py-autopep8
-  :ensure t
-  :defer t)
-
-(use-package ein
-  :ensure t
-  :defer t)
-(setenv "WORKON_HOME" "~/env/miniconda3/envs/")
-(pyvenv-mode 1)
-
-
-;;install fly-check and fly-check-tip, which do syntax checking
-
-(use-package flycheck
-  :ensure t
-  :config
-  (global-flycheck-mode))
-
-(use-package flycheck-pos-tip
-  :ensure t
-  :defer t)
-
-;;company mode, which does auto completion of syntax along with additional mode pacakges
-(use-package company
-  :ensure t
-  :defer t)
-
-(use-package company-auctex
-  :ensure t
-  :defer t)
 
 
 ;;smart parens, which provides IDE like paren management
@@ -199,17 +209,6 @@
   (setq sp-autoskip-closing-pair 'always)
   (setq sp-hybrid-kill-entire-symbol nil)
   (sp-use-paredit-bindings))
-
-;;AUCTeX for latex tools
-(use-package auctex
-  :ensure t
-  :defer t
-  :config
-  (setq TeX-auto-save t)
-  (setq TeX-parse-self t)
-  ;;(setq-default TeX-master nil) ;;AUCTeX will prompt for master file when creating new file
-  (setq global-font-lock-mode t)
-  (company-auctex-init))
 
 ;;Evil to provide VIM keybindings
 (use-package evil
@@ -277,10 +276,16 @@
   :bind ( :map org-mode-map
 	       ("C-c d" . org-decrypt-entries)))
 
+(org-babel-do-load-languages
+ 'org-babel-load-languages
+ '((emacs-lisp . t)
+   (org . t)))
+
 (use-package org-bullets
   :ensure t
   :defer t
-  :hook (org-mode . org-bullets-mode))
+  ;;:hook (org-mode . org-bullets-mode)
+)
 
 ;; have the ctrl-e and ctrol-a keys work better for emacs headlines
 (setq org-special-ctrl-a/e t)
@@ -377,6 +382,29 @@
     ;; (setq org-mind-map-engine "fdp")  ; Undirected Spring Force-Directed"
   )
 
+(use-package ox-hugo
+  :ensure t
+  :after ox)
+
+(use-package htmlize
+   :ensure t
+)
+
+(defun my/org-inline-css-hook (exporter)
+  "Insert custom inline css to automatically set the
+background of code to whatever theme I'm using's background"
+  (when (eq exporter 'html)
+    (let* ((my-pre-bg (face-background 'default))
+           (my-pre-fg (face-foreground 'default)))
+      (setq
+       org-html-head-extra
+       (concat
+        org-html-head-extra
+        (format "<style type=\"text/css\">\n pre.src {background-color: %s; color: %s;}</style>\n"
+                my-pre-bg my-pre-fg))))))
+
+(add-hook 'org-export-before-processing-hook 'my/org-inline-css-hook)
+
 (use-package solarized-theme
   :ensure t
   :defer t)
@@ -392,5 +420,6 @@
   :defer t)
 (load-theme 'spacemacs-dark)
 
+(setq default-frame-alist initial-frame-alist)
 ;;Font Settings
 '(default ((t (:family "Consolas" :foundry "PfEd" :slant normal :weight normal :height 116 :width normal))))
