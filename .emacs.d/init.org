@@ -531,8 +531,3 @@ In order for this code block to work, you must include the following line at the
 #+BEGIN_SRC org :tangle no
 #+PROPERTY: header-args :tangle init.el
 #+END_SRC
-
- 
- speel 
-
-speel 
