@@ -25,6 +25,8 @@ if uname -r | grep 'Microsoft' -q
 then
     export DISPLAY=localhost:0.0
     echo Bash on Windows detected. Set DIPLAY to $DISPLAY
+    export DOCKER_HOST=tcp://localhost:2375
+    echo Set Docker_Host to localhost:2375. Enable port on docker daemon on windows
 fi
 
 #export
