@@ -4,10 +4,10 @@
 is-executable getconf && PATH=$(`command -v getconf` PATH)
 
 # Define paths to add
-export GOPATH="$HOME/gopath"
+export GOPATH="$HOME/env/gopath"
 
-#Define python venvs director
-export WORKON_HOME="$HOME/env/miniconda3/envs/"
+#Define python venvs directory
+export WORKON_HOME="$HOME/env/python/"
 
 #Define path for shared libraries
 export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/lib
@@ -23,8 +23,8 @@ prepend-path "/usr/local/sbin"
 prepend-path "/usr/games/"
 prepend-path "$HOME/.local/bin"
 prepend-path "$HOME/bin"
-prepend-path "$HOME/env/miniconda2/bin"
-prepend-path "$HOME/env/miniconda3/bin"
+#prepend-path "$HOME/env/miniconda2/bin"
+#prepend-path "$HOME/env/miniconda3/bin"
 prepend-path "$GOPATH"
 
 
