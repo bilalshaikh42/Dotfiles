@@ -1,3 +1,4 @@
+
 #+TITLE: Emacs Configuration File
 #+PROPERTY: header-args :tangle init.el   
 ** About
@@ -8,10 +9,14 @@ This is my Emacs configuration file. At the moment (<2018-11-03 Sat>) it is heav
 (require 'package)
 (setq package-enable-at-startup nil)
 (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/"))
-(add-to-list 'package-archives '("marmalade" . "https://marmalade-repo.org/packages/"))
+(add-lwaysto-list 'package-archives '("marmalade" . "https://marmalade-repo.org/packages/"))
 (add-to-list 'package-archives '("gnu" . "https://elpa.gnu.org/packages/"))
 (package-initialize)
+(unless (package-installed-p 'use-package)
+  (package-refresh-contents)
+  (package-install 'use-package))
 #+END_SRC
+
 *** Auto Update Packages
 #+BEGIN_SRC emacs-lisp :tangle yes
 (use-package auto-package-update

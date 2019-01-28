@@ -1,8 +1,9 @@
-(require 'package)
-(setq package-enable-at-startup nil)
-(add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/"))
-(add-to-list 'package-archives '("marmalade" . "https://marmalade-repo.org/packages/"))
-(add-to-list 'package-archives '("gnu" . "https://elpa.gnu.org/packages/"))
+
+
+;; Added by Package.el.  This must come before configurations of
+;; installed packages.  Don't delete this line.  If you don't want it,
+;; just comment it out by adding a semicolon to the start of the line.
+;; You may delete these explanatory comments.
 (package-initialize)
 
 (use-package auto-package-update
@@ -270,11 +271,11 @@
   :hook (org-mode . visual-line-mode)
   :hook (org-mode . org-indent-mode)
   :bind(
-	("C-c l" . org-store-link)
-	("C-c a" . org-agenda)
-	("C-c c" . org-capture))
+        ("C-c l" . org-store-link)
+        ("C-c a" . org-agenda)
+        ("C-c c" . org-capture))
   :bind ( :map org-mode-map
-	       ("C-c d" . org-decrypt-entries)))
+               ("C-c d" . org-decrypt-entries)))
 
 (org-babel-do-load-languages
  'org-babel-load-languages
@@ -299,8 +300,8 @@
   :ensure t
   :config
   (setq org-gcal-client-id "8240918350-f32o6lnqmbfuvcledi75ptbf7aia2iv0.apps.googleusercontent.com"
-	org-gcal-client-secret "KryFDAztv4ysgsm2Cr_NyMMq" ;; Not really secret
-	org-gcal-file-alist '(("bill2507733@gmail.com" .  "~/Org/Appointments.org")))
+        org-gcal-client-secret "KryFDAztv4ysgsm2Cr_NyMMq" ;; Not really secret
+        org-gcal-file-alist '(("bill2507733@gmail.com" .  "~/Org/Appointments.org")))
   (add-hook 'org-agenda-mode-hook (lambda () (org-gcal-sync) ))
   (add-hook 'org-capture-after-finalize-hook (lambda () (org-gcal-sync) )))
 
@@ -320,49 +321,49 @@
   :bind
    ("C-c v" . org-brain-visualize)
   :bind( :map org-mode-map
-	      ("C-c i" . org-id-get-create)))
+              ("C-c i" . org-id-get-create)))
 
 (use-package org-super-agenda
   :ensure t
   :config
   (setq org-super-agenda-groups
-	'((:log t
-		:order 0)
-	  
-	  (:name "Habits"
-		 :habit t
-		 :order 7)
-	  
-	  (:name "Self-paced"
-		 :todo ("SOMEDAY" "TO-READ") 
-		 :order 8)
-	  
-	  (:name "Overdue!!"
-		 :deadline past
-		 :order 2)
+        '((:log t
+                :order 0)
+          
+          (:name "Habits"
+                 :habit t
+                 :order 7)
+          
+          (:name "Self-paced"
+                 :todo ("SOMEDAY" "TO-READ") 
+                 :order 8)
+          
+          (:name "Overdue!!"
+                 :deadline past
+                 :order 2)
 
-	  (:name "Missed!"
-		 :scheduled past
-		 :order 3)
-	 
-	  (:name "Today"
-		 :scheduled today
-		 :deadline today
-		 :order 4)
-	  
-	  (:name "Planned"
-		 :scheduled t
-		 :order 5)
-	  
-	  (:name "Upcoming"
-		 :deadline future
-		 :order 6)
-	
+          (:name "Missed!"
+                 :scheduled past
+                 :order 3)
+         
+          (:name "Today"
+                 :scheduled today
+                 :deadline today
+                 :order 4)
+          
+          (:name "Planned"
+                 :scheduled t
+                 :order 5)
+          
+          (:name "Upcoming"
+                 :deadline future
+                 :order 6)
+        
 
-	  (:name "Schedule"
-		 :time-grid t
-		 :order 1)
-	  ))
+          (:name "Schedule"
+                 :time-grid t
+                 :order 1)
+          ))
   :hook (org-agenda org-super-agenda-mode))
 
 ;;used to turn on ascii-art-to-unicode package
