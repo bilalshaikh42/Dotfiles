@@ -146,8 +146,9 @@
   (setq TeX-parse-self t)
   ;;(setq-default TeX-master nil) ;;AUCTeX will prompt for master file when creating new file
   (setq global-font-lock-mode t)
-  :bind (:map LaTeX-mode-map
-  ("C-<tab>" . 'TeX-complete-symbol)))
+  ;;:bind (:map LaTeX-mode-map
+  ;;("C-<tab>" . 'TeX-complete-symbol))
+)
 
 (use-package company-auctex
   :ensure t
@@ -279,6 +280,16 @@
 	("C-c c" . org-capture))
   :bind ( :map org-mode-map
 	       ("C-c d" . org-decrypt-entries)))
+
+(setq org-capture-templates '(("t" "Todo" entry
+                               (file+headline "~/Org/inbox.org" "Tasks")
+                               "* TODO %i%?")
+                              ("T" "Thought" entry
+                               (file+headline "~/Org/inbox.org" "Thoughts")
+                               "* %i%? \n %U \n %a")
+                              ("j" "Journal" entry 
+                              (file+datetree "~/Org/Journal.org")
+                              "* %?\nEntered on %U\n")))
 
 (org-babel-do-load-languages
  'org-babel-load-languages

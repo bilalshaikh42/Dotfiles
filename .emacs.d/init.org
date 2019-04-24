@@ -192,8 +192,9 @@ This is my Emacs configuration file. At the moment (<2018-11-03 Sat>) it is heav
   (setq TeX-parse-self t)
   ;;(setq-default TeX-master nil) ;;AUCTeX will prompt for master file when creating new file
   (setq global-font-lock-mode t)
-  :bind (:map LaTeX-mode-map
-  ("C-<tab>" . 'TeX-complete-symbol)))
+  ;;:bind (:map LaTeX-mode-map
+  ;;("C-<tab>" . 'TeX-complete-symbol))
+)
 
 (use-package company-auctex
   :ensure t
@@ -337,6 +338,25 @@ This is my Emacs configuration file. At the moment (<2018-11-03 Sat>) it is heav
 	       ("C-c d" . org-decrypt-entries)))
                
 #+END_SRC
+**** Capture Templates 
+#+BEGIN_SRC emacs-lisp
+(setq org-capture-templates '(("t" "Todo" entry
+                               (file+headline "~/Org/inbox.org" "Tasks")
+                               "* TODO %i%?")
+                              ("T" "Thought" entry
+                               (file+headline "~/Org/inbox.org" "Thoughts")
+                               "* %i%? \n %U \n %a")
+                              ("j" "Journal" entry 
+                              (file+datetree "~/Org/Journal.org")
+                              "* %?\nEntered on %U\n"))) 
+
+#+END_SRC
+
+#+RESULTS:
+| i | Inbox | entry | (file+headline ~/Org/inbox.org Tasks) | * TODO %i%? |
+| t | todo  | entry | (file+headline ~/Org/todo.org Todo)   | * %i%?      |
+
+
 **** Running Code
 #+BEGIN_SRC emacs-lisp :tangle yes
      (org-babel-do-load-languages
