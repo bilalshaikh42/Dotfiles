@@ -9,13 +9,16 @@ This is my Emacs configuration file. At the moment (<2018-11-03 Sat>) it is heav
 (require 'package)
 (setq package-enable-at-startup nil)
 (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/"))
-(add-lwaysto-list 'package-archives '("marmalade" . "https://marmalade-repo.org/packages/"))
+(add-to-list 'package-archives '("marmalade" . "https://marmalade-repo.org/packages/"))
 (add-to-list 'package-archives '("gnu" . "https://elpa.gnu.org/packages/"))
 (package-initialize)
 (unless (package-installed-p 'use-package)
   (package-refresh-contents)
   (package-install 'use-package))
 #+END_SRC
+
+#+RESULTS:
+| #s(package-desc bind-key (20180513 430) A simple way to manage personal keybindings nil single melpa nil ((:commit . 0ee88b5cac41acf974c4bedb8859931ead8bfc79) (:keywords keys keybinding config dotemacs) (:authors (John Wiegley . johnw@newartisans.com)) (:maintainer John Wiegley . johnw@newartisans.com) (:url . https://github.com/jwiegley/use-package)) nil) | #s(package-desc use-package (20190405 2047) A configuration macro for simplifying your .emacs ((emacs (24 3)) (bind-key (2 4))) tar melpa nil ((:commit . 0ee88b5cac41acf974c4bedb8859931ead8bfc79) (:keywords dotemacs startup speed config package) (:authors (John Wiegley . johnw@newartisans.com)) (:maintainer John Wiegley . johnw@newartisans.com) (:url . https://github.com/jwiegley/use-package)) nil) |
 
 *** Auto Update Packages
 #+BEGIN_SRC emacs-lisp :tangle yes
@@ -143,19 +146,20 @@ This is my Emacs configuration file. At the moment (<2018-11-03 Sat>) it is heav
 (use-package flyspell-popup
   :ensure t
   :config
-  (flyspell-popup-autocorrect-mode))
+  ;;(flyspell-popup-autocorrect-mode)
+)
 #+END_src
 ***** Syntax Checking
 #+BEGIN_SRC emacs-lisp :tangle yes
 ;;install fly-check and fly-check-tip, which do syntax checking
 
-(use-package flycheck-pos-tip
-  :ensure flycheck
-  :config 
-  (global-flycheck-mode)
-  (add-hook 'prog-mode-hook 'flycheck-mode)
-  (add-hook 'latex-mode-hook 'flycheck-mode)
-  (add-hook 'flycheck-mode-hook 'flycheck-pos-tip-mode))
+;;(use-package flycheck-pos-tip
+;;  :ensure flycheck
+;;  :config 
+;;  (global-flycheck-mode)
+;;  (add-hook 'prog-mode-hook 'flycheck-mode)
+;;  (add-hook 'latex-mode-hook 'flycheck-mode)
+;;  (add-hook 'flycheck-mode-hook 'flycheck-pos-tip-mode))
 
 #+END_SRC
 ***** Auto Completion
