@@ -270,8 +270,8 @@
   :config
   (add-to-list 'org-file-apps' ("\\.pdf\\'" . (lambda (file link) (org-pdfview-open link))))
   (setq org-agenda-files (quote("~/Org/")))
-  (setq org-todo-keywords'((sequence  "TODO(t)" "IN-PROGRESS(p)"  "WAIT(w@/!)" "SOMEDAY(s)" "|" "DONE(d!)" "CANCELED(c@)")))
-  (setq org-enforce-todo-dependencies nil)
+  (setq org-todo-keywords'((sequence  "TODO(t)" "IN-PROGRESS(p)"  "WAIT(w@/!)" "|" "DONE(d!)" "CANCELED(c@)")))
+  (setq org-enforce-todo-dependencies 1)
   :hook (org-mode . visual-line-mode)
   :hook (org-mode . org-indent-mode)
   :bind(
@@ -316,8 +316,9 @@
   (setq org-gcal-client-id "8240918350-f32o6lnqmbfuvcledi75ptbf7aia2iv0.apps.googleusercontent.com"
 	org-gcal-client-secret "KryFDAztv4ysgsm2Cr_NyMMq" ;; Not really secret
 	org-gcal-file-alist '(("bill2507733@gmail.com" .  "~/Org/Appointments.org")))
-  (add-hook 'org-agenda-mode-hook (lambda () (org-gcal-sync) ))
-  (add-hook 'org-capture-after-finalize-hook (lambda () (org-gcal-sync) )))
+  ;(add-hook 'org-agenda-mode-hook (lambda () (org-gcal-sync) ))
+  ;(add-hook 'org-capture-after-finalize-hook (lambda () (org-gcal-sync) ))
+)
 
 ;; Org-brain
 (use-package org-brain
