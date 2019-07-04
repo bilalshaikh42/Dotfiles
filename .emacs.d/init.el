@@ -138,25 +138,6 @@
   (local-set-key "\C-ch" 'hs-hide-block)
   (local-set-key "\C-cs" 'hs-show-block))
 
-;;AUCTeX for latex tools
-(use-package tex
-  :ensure auctex
-  :config
-  (setq TeX-auto-save t)
-  (setq TeX-parse-self t)
-  ;;(setq-default TeX-master nil) ;;AUCTeX will prompt for master file when creating new file
-  (setq global-font-lock-mode t)
-  ;;:bind (:map LaTeX-mode-map
-  ;;("C-<tab>" . 'TeX-complete-symbol))
-)
-
-(use-package company-auctex
-  :ensure t
-  :after company
-  :after tex
-  :config
-  (company-auctex-init))
-
 (use-package elpy
   :ensure t
   :defer t
@@ -180,6 +161,53 @@
 (add-hook 'elpy-mode-hook 'py-autopep8-enable-on-save)
 (add-hook 'elpy-mode-hook 'hs-minor-mode)
 (add-hook 'elpy-mode-hook 'hs-minor-mode-keys)
+
+;;AUCTeX for latex tools
+(use-package tex
+  :ensure auctex
+  :config
+  (setq TeX-auto-save t)
+  (setq TeX-parse-self t)
+  ;;(setq-default TeX-master nil) ;;AUCTeX will prompt for master file when creating new file
+  (setq global-font-lock-mode t)
+  ;;:bind (:map LaTeX-mode-map
+  ;;("C-<tab>" . 'TeX-complete-symbol))
+)
+
+(use-package company-auctex
+  :ensure t
+  :after company
+  :after tex
+  :config
+  (company-auctex-init))
+
+(use-package js2-mode
+  :ensure t
+  :defer t
+  :hook (js2-mode . js2-imenu-extras-mode))
+
+(use-package js2-refactor
+  :ensure t
+  :defer t
+  :hook( js2-mode . js2-refactor-mode)
+  :bind (:map js2-mode-map
+         ("C-k" . js2r-kill)
+         ("M-." . nil))
+ :config((js2r-add-keybindings-with-prefix "C-c C-r")))
+
+(use-package xref-js2
+  :ensure t
+  :defer t)
+
+(use-package company-tern
+:ensure t
+:defer t
+:init ((add-to-list('company-backends 'company-tern)))
+:hook (js2-mode . company-mode)
+      (js2-mode . tern-mode)
+:bind( :map(tern-mode-keymap)
+       ("M-." . nil)
+       ("M-," . nil)))
 
 ;;Install try, which lets you run a package without installing it
 (use-package try

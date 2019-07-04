@@ -16,10 +16,6 @@ This is my Emacs configuration file. At the moment (<2018-11-03 Sat>) it is heav
   (package-refresh-contents)
   (package-install 'use-package))
 #+END_SRC
-
-#+RESULTS:
-| #s(package-desc bind-key (20180513 430) A simple way to manage personal keybindings nil single melpa nil ((:commit . 0ee88b5cac41acf974c4bedb8859931ead8bfc79) (:keywords keys keybinding config dotemacs) (:authors (John Wiegley . johnw@newartisans.com)) (:maintainer John Wiegley . johnw@newartisans.com) (:url . https://github.com/jwiegley/use-package)) nil) | #s(package-desc use-package (20190405 2047) A configuration macro for simplifying your .emacs ((emacs (24 3)) (bind-key (2 4))) tar melpa nil ((:commit . 0ee88b5cac41acf974c4bedb8859931ead8bfc79) (:keywords dotemacs startup speed config package) (:authors (John Wiegley . johnw@newartisans.com)) (:maintainer John Wiegley . johnw@newartisans.com) (:url . https://github.com/jwiegley/use-package)) nil) |
-
 *** Auto Update Packages
 #+BEGIN_SRC emacs-lisp :tangle yes
 (use-package auto-package-update
@@ -182,29 +178,8 @@ This is my Emacs configuration file. At the moment (<2018-11-03 Sat>) it is heav
 
 #+END_SRC
 **** Editing Modes
-***** Latex
-#+BEGIN_SRC emacs-lisp :tangle yes
-;;AUCTeX for latex tools
-(use-package tex
-  :ensure auctex
-  :config
-  (setq TeX-auto-save t)
-  (setq TeX-parse-self t)
-  ;;(setq-default TeX-master nil) ;;AUCTeX will prompt for master file when creating new file
-  (setq global-font-lock-mode t)
-  ;;:bind (:map LaTeX-mode-map
-  ;;("C-<tab>" . 'TeX-complete-symbol))
-)
-
-(use-package company-auctex
-  :ensure t
-  :after company
-  :after tex
-  :config
-  (company-auctex-init))
-  
-#+END_SRC
-***** Python
+***** Programming
+****** Python
 #+BEGIN_SRC emacs-lisp :tangle yes
 (use-package elpy
   :ensure t
@@ -230,7 +205,60 @@ This is my Emacs configuration file. At the moment (<2018-11-03 Sat>) it is heav
 (add-hook 'elpy-mode-hook 'hs-minor-mode)
 (add-hook 'elpy-mode-hook 'hs-minor-mode-keys)
 #+END_SRC
+***** Documentation
+****** Latex
+#+BEGIN_SRC emacs-lisp :tangle yes
+;;AUCTeX for latex tools
+(use-package tex
+  :ensure auctex
+  :config
+  (setq TeX-auto-save t)
+  (setq TeX-parse-self t)
+  ;;(setq-default TeX-master nil) ;;AUCTeX will prompt for master file when creating new file
+  (setq global-font-lock-mode t)
+  ;;:bind (:map LaTeX-mode-map
+  ;;("C-<tab>" . 'TeX-complete-symbol))
+)
 
+(use-package company-auctex
+  :ensure t
+  :after company
+  :after tex
+  :config
+  (company-auctex-init))
+  
+#+END_SRC
+***** Web Development
+****** JavaScript
+#+BEGIN_SRC emacs-lisp :tangle yes
+(use-package js2-mode
+  :ensure t
+  :defer t
+  :hook (js2-mode . js2-imenu-extras-mode))
+
+(use-package js2-refactor
+  :ensure t
+  :defer t
+  :hook( js2-mode . js2-refactor-mode)
+  :bind (:map js2-mode-map
+         ("C-k" . js2r-kill)
+         ("M-." . nil))
+ :config((js2r-add-keybindings-with-prefix "C-c C-r")))
+
+(use-package xref-js2
+  :ensure t
+  :defer t)
+
+(use-package company-tern
+:ensure t
+:defer t
+:init ((add-to-list('company-backends 'company-tern)))
+:hook (js2-mode . company-mode)
+      (js2-mode . tern-mode)
+:bind( :map(tern-mode-keymap)
+       ("M-." . nil)
+       ("M-," . nil)))
+#+END_SRC
 *** General Packages
 #+BEGIN_SRC emacs-lisp :tangle yes
 ;;Install try, which lets you run a package without installing it
