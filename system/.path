@@ -6,8 +6,7 @@ is-executable getconf && PATH=$(`command -v getconf` PATH)
 # Define paths to add
 export GOPATH="$HOME/env/gopath"
 
-#Define python venvs directory
-export WORKON_HOME="$HOME/env/python/"
+
 
 #Define path for shared libraries
 export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/lib
@@ -28,8 +27,17 @@ prepend-path "$HOME/env/npm/bin"
 #prepend-path "$HOME/env/miniconda3/bin"
 prepend-path "$GOPATH"
 
+#Set up python virtual environment wrapper
+#Define python venvs directory
+export WORKON_HOME="$HOME/env/python/"
+export PIP_VIRTUALENV_BASE=$WORKON_HOME
+#Source the script if virtualenvwrapper is installed
 
-
+if hash virtualenvwrapper.sh 2>/dev/null; then
+        source virtualenvwrapper.sh
+    else
+        echo ""
+    fi
 # Remove duplicates (preserving prepended items)
 # Source: http://unix.stackexchange.com/a/40755
 
