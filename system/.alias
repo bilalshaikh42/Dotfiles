@@ -25,7 +25,8 @@ alias upgrade='sudo apt-get upgrade'
 alias ..='cd ..'
 alias home='cd'
 
-#CLAC Backup
-alias clacbackup='/home/jae/cs3157-pub/tool/backup-cs3157-to-cunix.sh'
+#Circle CI test
+alias cci='circleci local execute'
+
 
 #dangerous command confirmation
