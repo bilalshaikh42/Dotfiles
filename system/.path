@@ -31,6 +31,9 @@ prepend-path "$GOPATH"
 #Define python venvs directory
 export WORKON_HOME="$HOME/env/python/"
 export PIP_VIRTUALENV_BASE=$WORKON_HOME
+# Point to the correct python and virtual env if installed using pip 
+export VIRTUALENVWRAPPER_PYTHON=/usr/bin/python3
+export VIRTUALENVWRAPPER_VIRTUALENV=/usr/local/bin/virtualenv
 #Source the script if virtualenvwrapper is installed
 
 if hash virtualenvwrapper.sh 2>/dev/null; then
