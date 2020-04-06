@@ -1,6 +1,7 @@
 [user]
   name =Bilal Shaikh
   email = bilalshaikh42@gmail.com
+	signingkey = 6B8AF6FE582764AA
 
 
 [github]
@@ -9,7 +10,7 @@
 
 [core]
   excludesfile = ~/.gitignore_global
-  editor = emacs
+  editor = code
   
 
 [alias]
