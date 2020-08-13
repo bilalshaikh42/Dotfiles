@@ -65,3 +65,9 @@ meteo() {
 md() {
   pandoc $1 | lynx -stdin -dump
 }
+
+
+# Run busybox container on k8s to debug
+kcdebug() { 
+  kubectl run -i --rm --tty debug --image=busybox --restart=Never -- sh
+}
