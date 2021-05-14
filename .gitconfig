@@ -1,7 +1,7 @@
 [user]
-  name =Bilal Shaikh
-  email = bilalshaikh42@gmail.com
-	signingkey = 6B8AF6FE582764AA
+	name = Bilal Shaikh
+	email = bilalshaikh42@gmail.com
+	signingkey = 20AF410ACB490F7FDE1F1B422B81BCA28F8B07E7
 
 
 [github]
@@ -64,3 +64,7 @@
 	rebase = true
 [url "ssh://git@github.com/"]
 	insteadOf = https://github.com/
+[gpg]
+	program = gpg2
+[commit]
+	gpgsign = true
