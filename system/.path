@@ -27,7 +27,7 @@ prepend-path "$HOME/env/flutter/bin"
 #prepend-path "$HOME/env/miniconda2/bin"
 #prepend-path "$HOME/env/miniconda3/bin"
 prepend-path "$GOPATH"
-
+prepend-path "/usr/local/go/bin"
 #Set up python virtual environment wrapper
 #Define python venvs directory
 export WORKON_HOME="$HOME/env/python/"
