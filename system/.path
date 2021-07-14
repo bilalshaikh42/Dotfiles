@@ -28,6 +28,8 @@ prepend-path "$HOME/env/flutter/bin"
 #prepend-path "$HOME/env/miniconda3/bin"
 prepend-path "$GOPATH"
 prepend-path "/usr/local/go/bin"
+prepend-path "/usr/local/cuda/bin"
+prepend-path "/usr/local/cuda-11.4/bin"
 #Set up python virtual environment wrapper
 #Define python venvs directory
 export WORKON_HOME="$HOME/env/python/"
